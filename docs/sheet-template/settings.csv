@@ -1,0 +1,11 @@
+setting,value,help
+delivery fee,0,GEL added to delivery orders. 0 = free delivery.
+free delivery over,0,Free delivery when the food costs at least this much. 0 = off.
+minimum order,0,Smallest delivery order in GEL. 0 = no minimum. Pickup has no minimum.
+prep time pickup,30,Minutes until a pickup order is usually ready.
+prep time delivery,45,Minutes until a delivery order usually arrives.
+pause online orders,no,yes = the menu stays visible but nobody can order.
+delivery,yes,Offer delivery (yes / no).
+pickup,yes,Offer pickup (yes / no).
+signature dishes,"Chicken Biryani, Raju Gari Kodi Pulao, Arabic Kushka, Kerala Mandi, Ambur Biryani",Dishes shown big on the home page.
+google review link,,"Your ""Write a review"" link from Google Business Profile."

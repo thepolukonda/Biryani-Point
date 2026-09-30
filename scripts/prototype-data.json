@@ -1,0 +1,1202 @@
+{
+  "categories": [
+    {
+      "id": "biryani",
+      "name": {
+        "en": "Biryani",
+        "ka": "ბირიანი",
+        "ru": "Бирьяни"
+      },
+      "blurb": {
+        "en": "Layered rice and masala, cooked slow.",
+        "ka": "ფენებად დაწყობილი ბრინჯი და მასალა, ნელ ცეცხლზე.",
+        "ru": "Слои риса и масалы, томлённые на медленном огне."
+      }
+    },
+    {
+      "id": "rice",
+      "name": {
+        "en": "Pulao & Mandi",
+        "ka": "პულაო და მანდი",
+        "ru": "Плов и манди"
+      },
+      "blurb": {
+        "en": "Milder, aromatic rice dishes.",
+        "ka": "უფრო რბილი, არომატული ბრინჯის კერძები.",
+        "ru": "Более мягкие ароматные блюда из риса."
+      }
+    },
+    {
+      "id": "chinese",
+      "name": {
+        "en": "Indo-Chinese",
+        "ka": "ინდო-ჩინური",
+        "ru": "Индо-китайская кухня"
+      },
+      "blurb": {
+        "en": "Straight from the wok.",
+        "ka": "პირდაპირ ვოკიდან.",
+        "ru": "Прямо из вока."
+      }
+    }
+  ],
+  "menu": [
+    {
+      "id": "chicken-biryani",
+      "name": "Chicken Biryani",
+      "cat": "biryani",
+      "price": 20,
+      "veg": false,
+      "popular": true,
+      "desc": {
+        "en": "Our house biryani. Fragrant rice layered with chicken marinated in yogurt and whole spices.",
+        "ka": "ჩვენი საფირმო ბირიანი. არომატული ბრინჯი, ფენებად დაწყობილი იოგურტსა და მთლიან სანელებლებში მარინირებულ ქათამთან.",
+        "ru": "Наш фирменный бирьяни. Ароматный рис слоями с курицей, маринованной в йогурте и цельных специях."
+      }
+    },
+    {
+      "id": "fry-pieces-biryani-boneless",
+      "name": "Fry Pieces Biryani (Boneless)",
+      "cat": "biryani",
+      "price": 22,
+      "veg": false,
+      "popular": true,
+      "desc": {
+        "en": "Biryani rice topped with crispy, masala-fried boneless chicken.",
+        "ka": "ბირიანის ბრინჯი ხრაშუნა, მასალაში შემწვარი უძვლო ქათმით.",
+        "ru": "Рис бирьяни с хрустящей курицей без костей, обжаренной в масале."
+      }
+    },
+    {
+      "id": "fry-pieces-biryani-bone",
+      "name": "Fry Pieces Biryani (Bone)",
+      "cat": "biryani",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Biryani rice topped with crispy, masala-fried chicken on the bone.",
+        "ka": "ბირიანის ბრინჯი ხრაშუნა, მასალაში შემწვარი ძვლიანი ქათმით.",
+        "ru": "Рис бирьяни с хрустящей курицей на кости, обжаренной в масале."
+      }
+    },
+    {
+      "id": "kerala-biryani",
+      "name": "Kerala Biryani",
+      "cat": "biryani",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Malabar style, with short-grain rice, fried onions and a gentle, fragrant spice.",
+        "ka": "მალაბარული სტილი: მოკლემარცვლოვანი ბრინჯი, შემწვარი ხახვი და რბილი, არომატული სანელებლები.",
+        "ru": "По-малабарски: короткозёрный рис, жареный лук и мягкие ароматные специи."
+      }
+    },
+    {
+      "id": "ambur-biryani",
+      "name": "Ambur Biryani",
+      "cat": "biryani",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Tamil Nadu style from the town of Ambur, cooked with a red chilli masala.",
+        "ka": "ტამილ-ნადუს სტილი ქალაქ ამბურიდან, წითელი წიწაკის მასალით.",
+        "ru": "Тамильский бирьяни из города Амбур, с масалой на красном чили."
+      }
+    },
+    {
+      "id": "thalappakati-biryani",
+      "name": "Thalappakati Biryani",
+      "cat": "biryani",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Dindigul style with small-grain seeraga samba rice and a peppery masala.",
+        "ka": "დინდიგულის სტილი: წვრილმარცვლოვანი სეერაგა სამბას ბრინჯი და პილპილიანი მასალა.",
+        "ru": "По-диндигульски: мелкозёрный рис сирага самба и перечная масала."
+      }
+    },
+    {
+      "id": "veg-dum-biryani",
+      "name": "Veg Dum Biryani",
+      "cat": "biryani",
+      "price": 18,
+      "veg": true,
+      "desc": {
+        "en": "Mixed vegetables and rice, sealed and slow-cooked on dum.",
+        "ka": "ბოსტნეული და ბრინჯი, დახურულ ქვაბში ნელ ცეცხლზე მომზადებული.",
+        "ru": "Овощи и рис, томлённые под крышкой на медленном огне."
+      }
+    },
+    {
+      "id": "arabic-kushka",
+      "name": "Arabic Kushka",
+      "cat": "rice",
+      "price": 28,
+      "veg": false,
+      "popular": true,
+      "desc": {
+        "en": "Arabian-style spiced rice served with chicken. Big enough to share.",
+        "ka": "არაბული სტილის სანელებლებიანი ბრინჯი ქათმით. დიდი ულუფა, გასაყოფად საკმარისი.",
+        "ru": "Пряный рис по-арабски с курицей. Большая порция, можно разделить."
+      }
+    },
+    {
+      "id": "kerala-mandi",
+      "name": "Kerala Mandi",
+      "cat": "rice",
+      "price": 25,
+      "veg": false,
+      "desc": {
+        "en": "Mild, aromatic rice with tender chicken. A Kerala favourite with Arabian roots.",
+        "ka": "რბილი, არომატული ბრინჯი ნაზ ქათამთან ერთად. კერალას საყვარელი კერძი არაბული ფესვებით.",
+        "ru": "Нежный ароматный рис с мягкой курицей. Любимое блюдо Кералы с арабскими корнями."
+      }
+    },
+    {
+      "id": "chicken-pulao",
+      "name": "Chicken Pulao",
+      "cat": "rice",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Rice and chicken cooked together in one pot. Lighter and milder than biryani.",
+        "ka": "ბრინჯი და ქათამი ერთ ქვაბში მომზადებული. ბირიანზე მსუბუქი და ნაკლებად ცხარე.",
+        "ru": "Рис и курица, приготовленные в одном котле. Легче и мягче, чем бирьяни."
+      }
+    },
+    {
+      "id": "raju-gari-kodi-pulao",
+      "name": "Raju Gari Kodi Pulao",
+      "cat": "rice",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Andhra-style chicken pulao with a bold, spicy masala.",
+        "ka": "ანდჰრული ქათმის პულაო მძაფრი, ცხარე მასალით.",
+        "ru": "Куриный плов по-андхрски с яркой острой масалой."
+      }
+    },
+    {
+      "id": "chicken-fried-rice",
+      "name": "Chicken Fried Rice",
+      "cat": "chinese",
+      "price": 19,
+      "veg": false,
+      "desc": {
+        "en": "Wok-tossed rice with chicken, vegetables and soy.",
+        "ka": "ვოკში შემწვარი ბრინჯი ქათმით, ბოსტნეულითა და სოიოს სოუსით.",
+        "ru": "Рис, обжаренный в воке с курицей, овощами и соевым соусом."
+      }
+    },
+    {
+      "id": "chicken-noodles",
+      "name": "Chicken Noodles",
+      "cat": "chinese",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Hakka noodles tossed with chicken and crunchy vegetables.",
+        "ka": "ჰაკა ატრია ქათმითა და ხრაშუნა ბოსტნეულით.",
+        "ru": "Лапша хакка с курицей и хрустящими овощами."
+      }
+    },
+    {
+      "id": "chicken-manchurian",
+      "name": "Chicken Manchurian",
+      "cat": "chinese",
+      "price": 20,
+      "veg": false,
+      "desc": {
+        "en": "Crispy chicken in a tangy, garlicky Indo-Chinese sauce.",
+        "ka": "ხრაშუნა ქათამი მომჟავო, ნივრიან ინდო-ჩინურ სოუსში.",
+        "ru": "Хрустящая курица в кисловатом чесночном индо-китайском соусе."
+      }
+    }
+  ],
+  "T": {
+    "food_t": {
+      "en": "What we cook",
+      "ka": "რას ვამზადებთ",
+      "ru": "Что мы готовим"
+    },
+    "food_s": {
+      "en": "Tap a photo to find it on the menu.",
+      "ka": "დააჭირეთ ფოტოს, რომ მენიუში ნახოთ.",
+      "ru": "Нажмите на фото, чтобы найти блюдо в меню."
+    },
+    "scrib_home": {
+      "en": "Hungry? The full menu is one tap away.",
+      "ka": "მოგშივდათ? სრული მენიუ ერთ შეხებაზეა.",
+      "ru": "Проголодались? Всё меню в одно касание."
+    },
+    "open_menu": {
+      "en": "Open the menu",
+      "ka": "მენიუს გახსნა",
+      "ru": "Открыть меню"
+    },
+    "order_n": {
+      "en": "Order",
+      "ka": "შეკვეთა",
+      "ru": "Заказ"
+    },
+    "back_home": {
+      "en": "Home",
+      "ka": "მთავარი",
+      "ru": "Главная"
+    },
+    "board_until": {
+      "en": "till {t}",
+      "ka": "{t}-მდე",
+      "ru": "до {t}"
+    },
+    "board_opens": {
+      "en": "opens {next}",
+      "ka": "გაიხსნება {next}",
+      "ru": "откроемся {next}"
+    },
+    "sign_sub": {
+      "en": "Andhra & South Indian food",
+      "ka": "ანდჰრული და სამხრეთ ინდური კერძები",
+      "ru": "Андхрская и южноиндийская кухня"
+    },
+    "sign_orders": {
+      "en": "Orders on WhatsApp",
+      "ka": "შეკვეთები WhatsApp-ით",
+      "ru": "Заказы в WhatsApp"
+    },
+    "open_sign": {
+      "en": "OPEN",
+      "ka": "ღიაა",
+      "ru": "ОТКРЫТО"
+    },
+    "closed_sign": {
+      "en": "CLOSED",
+      "ka": "დაკეტილია",
+      "ru": "ЗАКРЫТО"
+    },
+    "see_menu": {
+      "en": "See the menu",
+      "ka": "მენიუს ნახვა",
+      "ru": "Смотреть меню"
+    },
+    "menu_note": {
+      "en": "Prices in lari. Every plate is cooked when you order it.",
+      "ka": "ფასები ლარში. ყველა კერძი მზადდება შეკვეთისას.",
+      "ru": "Цены в лари. Каждое блюдо готовим после заказа."
+    },
+    "tap_add": {
+      "en": "Tap + to add. Your order goes to us on WhatsApp.",
+      "ka": "დასამატებლად დააჭირეთ +-ს. შეკვეთა WhatsApp-ით მოგვივა.",
+      "ru": "Нажмите +, чтобы добавить. Заказ придёт нам в WhatsApp."
+    },
+    "n_spicy": {
+      "en": "the spicy one!",
+      "ka": "ცხარეა!",
+      "ru": "острое!"
+    },
+    "n_share": {
+      "en": "enough for two",
+      "ka": "ორისთვის",
+      "ru": "на двоих"
+    },
+    "n_veg": {
+      "en": "no meat",
+      "ka": "უხორცო",
+      "ru": "без мяса"
+    },
+    "n_house": {
+      "en": "our house biryani",
+      "ka": "საფირმო",
+      "ru": "фирменный"
+    },
+    "how_t": {
+      "en": "How ordering works",
+      "ka": "როგორ შევუკვეთოთ",
+      "ru": "Как заказать"
+    },
+    "how_1": {
+      "en": "Pick your dishes on the menu.",
+      "ka": "აირჩიეთ კერძები მენიუში.",
+      "ru": "Выберите блюда в меню."
+    },
+    "how_2": {
+      "en": "Your order opens in WhatsApp, already written out.",
+      "ka": "შეკვეთა გაიხსნება WhatsApp-ში, უკვე დაწერილი.",
+      "ru": "Заказ откроется в WhatsApp уже написанным."
+    },
+    "how_3": {
+      "en": "Press send. We reply to confirm the time.",
+      "ka": "დააჭირეთ გაგზავნას. დროს დაგიდასტურებთ.",
+      "ru": "Нажмите «Отправить». Мы ответим и подтвердим время."
+    },
+    "slip_t": {
+      "en": "Your order",
+      "ka": "თქვენი შეკვეთა",
+      "ru": "Ваш заказ"
+    },
+    "slip_go": {
+      "en": "Checkout",
+      "ka": "გაფორმება",
+      "ru": "Оформить"
+    },
+    "owner_t": {
+      "en": "From the kitchen",
+      "ka": "სამზარეულოდან",
+      "ru": "С кухни"
+    },
+    "reviews_t": {
+      "en": "What people say",
+      "ka": "რას ამბობენ",
+      "ru": "Что говорят гости"
+    },
+    "order_cover": {
+      "en": "Order for delivery or pickup",
+      "ka": "შეუკვეთეთ მიტანით ან გასატანად",
+      "ru": "Закажите с доставкой или самовывозом"
+    },
+    "photos_note": {
+      "en": "from our kitchen",
+      "ka": "ჩვენი სამზარეულოდან",
+      "ru": "с нашей кухни"
+    },
+    "nav_home": {
+      "en": "Home",
+      "ka": "მთავარი",
+      "ru": "Главная"
+    },
+    "nav_about": {
+      "en": "About",
+      "ka": "ჩვენ შესახებ",
+      "ru": "О нас"
+    },
+    "nav_food": {
+      "en": "Our food",
+      "ka": "კერძები",
+      "ru": "Блюда"
+    },
+    "order_online": {
+      "en": "Order online",
+      "ka": "ონლაინ შეკვეთა",
+      "ru": "Заказать онлайн"
+    },
+    "view_menu": {
+      "en": "View menu",
+      "ka": "მენიუს ნახვა",
+      "ru": "Смотреть меню"
+    },
+    "hero_kicker": {
+      "en": "Andhra & South Indian kitchen",
+      "ka": "ანდჰრული და სამხრეთ ინდური სამზარეულო",
+      "ru": "Андхрская и южноиндийская кухня"
+    },
+    "stat_dishes": {
+      "en": "dishes on the menu",
+      "ka": "კერძი მენიუში",
+      "ru": "блюд в меню"
+    },
+    "stat_from": {
+      "en": "starting price",
+      "ka": "საწყისი ფასი",
+      "ru": "начальная цена"
+    },
+    "stat_veg": {
+      "en": "languages: EN · ქარ · РУ",
+      "ka": "ენა: EN · ქარ · РУ",
+      "ru": "языка: EN · ქარ · РУ"
+    },
+    "about_k": {
+      "en": "Our story",
+      "ka": "ჩვენი ისტორია",
+      "ru": "Наша история"
+    },
+    "about_t": {
+      "en": "An Andhra kitchen in the heart of Batumi.",
+      "ka": "ანდჰრული სამზარეულო ბათუმის გულში.",
+      "ru": "Андхрская кухня в самом сердце Батуми."
+    },
+    "about_p1": {
+      "en": "Biryani Point brings the bold, generous flavours of Andhra Pradesh and South India to Batumi. Fragrant rice, whole spices and slow cooking, the way it's done back home.",
+      "ka": "Biryani Point ბათუმში ანდჰრა-პრადეშისა და სამხრეთ ინდოეთის მდიდარ, მძაფრ გემოებს გთავაზობთ. არომატული ბრინჯი, მთლიანი სანელებლები და ნელი მომზადება, ისე როგორც სახლში.",
+      "ru": "Biryani Point привозит в Батуми яркие, щедрые вкусы Андхра-Прадеш и Южной Индии. Ароматный рис, цельные специи и неспешное приготовление, как дома."
+    },
+    "about_p2": {
+      "en": "Every order is cooked fresh when it reaches our kitchen. Pick it up, or have it delivered hot to your door.",
+      "ka": "ყოველი შეკვეთა ახლად მზადდება, როგორც კი სამზარეულოში შემოვა. წაიღეთ თავად ან შეუკვეთეთ ცხლად კარამდე.",
+      "ru": "Каждый заказ готовится свежим, как только поступает на кухню. Заберите сами или получите горячим с доставкой."
+    },
+    "serve_k": {
+      "en": "What we serve",
+      "ka": "რას გთავაზობთ",
+      "ru": "Что мы готовим"
+    },
+    "serve_t": {
+      "en": "From the pot and the wok.",
+      "ka": "ქვაბიდან და ვოკიდან.",
+      "ru": "Из котла и из вока."
+    },
+    "see_dishes": {
+      "en": "See {n} dishes",
+      "ka": "{n} კერძის ნახვა",
+      "ru": "Смотреть блюда: {n}"
+    },
+    "sig_k": {
+      "en": "Signature dishes",
+      "ka": "საფირმო კერძები",
+      "ru": "Фирменные блюда"
+    },
+    "sig_t": {
+      "en": "Start with these.",
+      "ka": "დაიწყეთ ამით.",
+      "ru": "Начните с этого."
+    },
+    "add_to_order": {
+      "en": "Add to order",
+      "ka": "შეკვეთაში დამატება",
+      "ru": "Добавить в заказ"
+    },
+    "in_order": {
+      "en": "In your order: {q}",
+      "ka": "შეკვეთაშია: {q}",
+      "ru": "В заказе: {q}"
+    },
+    "full_menu": {
+      "en": "Full menu",
+      "ka": "სრული მენიუ",
+      "ru": "Всё меню"
+    },
+    "visit_k": {
+      "en": "Visit us",
+      "ka": "გვეწვიეთ",
+      "ru": "Приходите к нам"
+    },
+    "cta_t": {
+      "en": "Hungry? Order in a minute.",
+      "ka": "მოგშივდათ? შეუკვეთეთ ერთ წუთში.",
+      "ru": "Проголодались? Закажите за минуту."
+    },
+    "cta_s": {
+      "en": "Send your order straight to our kitchen on WhatsApp.",
+      "ka": "გამოგზავნეთ შეკვეთა პირდაპირ ჩვენს სამზარეულოში WhatsApp-ით.",
+      "ru": "Отправьте заказ прямо на нашу кухню через WhatsApp."
+    },
+    "menu_btn": {
+      "en": "Menu",
+      "ka": "მენიუ",
+      "ru": "Меню"
+    },
+    "search_dishes": {
+      "en": "Search dishes",
+      "ka": "კერძის ძებნა",
+      "ru": "Поиск блюд"
+    },
+    "venue_sub": {
+      "en": "Andhra & South Indian · Biryani · Pulao",
+      "ka": "ანდჰრული და სამხრეთ ინდური · ბირიანი · პულაო",
+      "ru": "Андхрская и южноиндийская кухня · Бирьяни · Плов"
+    },
+    "info": {
+      "en": "Info",
+      "ka": "ინფორმაცია",
+      "ru": "Инфо"
+    },
+    "popular_t": {
+      "en": "Popular",
+      "ka": "პოპულარული",
+      "ru": "Популярное"
+    },
+    "panel_empty_t": {
+      "en": "Your order is empty",
+      "ka": "შეკვეთა ცარიელია",
+      "ru": "Заказ пуст"
+    },
+    "panel_empty_s": {
+      "en": "Add dishes from the menu to get started.",
+      "ka": "დაიწყეთ მენიუდან კერძების დამატებით.",
+      "ru": "Добавьте блюда из меню, чтобы начать."
+    },
+    "checkout_l": {
+      "en": "Checkout",
+      "ka": "გაფორმება",
+      "ru": "Оформить"
+    },
+    "view_order": {
+      "en": "View order",
+      "ka": "შეკვეთის ნახვა",
+      "ru": "Посмотреть заказ"
+    },
+    "marquee": {
+      "en": [
+        "Andhra spice",
+        "Cooked to order",
+        "Biryani & pulao",
+        "Delivery & pickup",
+        "Order on WhatsApp",
+        "Veg options"
+      ],
+      "ka": [
+        "ანდჰრული სანელებლები",
+        "მზადდება შეკვეთისთანავე",
+        "ბირიანი და პულაო",
+        "მიტანა და გატანა",
+        "შეკვეთა WhatsApp-ით",
+        "უხორცო კერძები"
+      ],
+      "ru": [
+        "Андхрские специи",
+        "Готовим под заказ",
+        "Бирьяни и плов",
+        "Доставка и самовывоз",
+        "Заказ через WhatsApp",
+        "Блюда без мяса"
+      ]
+    },
+    "spec_t": {
+      "en": "Most loved",
+      "ka": "ყველაზე საყვარელი",
+      "ru": "Любимое гостей"
+    },
+    "spec_s": {
+      "en": "Our guests' favourites, fresh from the pot.",
+      "ka": "ჩვენი სტუმრების ფავორიტები, ახლად მომზადებული.",
+      "ru": "Фавориты наших гостей, прямо с огня."
+    },
+    "prev": {
+      "en": "Previous",
+      "ka": "წინა",
+      "ru": "Назад"
+    },
+    "next": {
+      "en": "Next",
+      "ka": "შემდეგი",
+      "ru": "Вперёд"
+    },
+    "w1": {
+      "en": "Andhra recipes",
+      "ka": "ანდჰრული რეცეპტები",
+      "ru": "Андхрские рецепты"
+    },
+    "w1s": {
+      "en": "Bold spice, the way it's made at home.",
+      "ka": "მძაფრი გემო, როგორც სახლში.",
+      "ru": "Яркие специи, как дома."
+    },
+    "w2": {
+      "en": "Cooked to order",
+      "ka": "მზადდება შეკვეთისთანავე",
+      "ru": "Готовим под заказ"
+    },
+    "w2s": {
+      "en": "Nothing waits under a heat lamp.",
+      "ka": "არაფერი ელოდება გამათბობლის ქვეშ.",
+      "ru": "Ничего не ждёт под лампой."
+    },
+    "w3": {
+      "en": "Delivery or pickup",
+      "ka": "მიტანა ან გატანა",
+      "ru": "Доставка или самовывоз"
+    },
+    "w3s": {
+      "en": "Hot to your door, or collect it yourself.",
+      "ka": "ცხლად კარამდე, ან თავად წაიღეთ.",
+      "ru": "Горячим до двери или заберите сами."
+    },
+    "w4": {
+      "en": "Veg options",
+      "ka": "უხორცო კერძები",
+      "ru": "Блюда без мяса"
+    },
+    "w4s": {
+      "en": "Filter the menu in one tap.",
+      "ka": "მენიუს ფილტრი ერთი შეხებით.",
+      "ru": "Фильтр меню в одно касание."
+    },
+    "toast_added": {
+      "en": "{n} added to your order",
+      "ka": "{n} დაემატა შეკვეთას",
+      "ru": "{n} — добавлено в заказ"
+    },
+    "wa_aria": {
+      "en": "Chat with us on WhatsApp",
+      "ka": "მოგვწერეთ WhatsApp-ში",
+      "ru": "Написать нам в WhatsApp"
+    },
+    "follow": {
+      "en": "Follow us",
+      "ka": "გამოგვყევით",
+      "ru": "Мы в соцсетях"
+    },
+    "skip": {
+      "en": "Skip to menu",
+      "ka": "მენიუზე გადასვლა",
+      "ru": "Перейти к меню"
+    },
+    "nav_menu": {
+      "en": "Menu",
+      "ka": "მენიუ",
+      "ru": "Меню"
+    },
+    "nav_visit": {
+      "en": "Visit",
+      "ka": "მისამართი",
+      "ru": "Контакты"
+    },
+    "order": {
+      "en": "Order",
+      "ka": "შეკვეთა",
+      "ru": "Заказ"
+    },
+    "call_aria": {
+      "en": "Call Biryani Point",
+      "ka": "დარეკვა",
+      "ru": "Позвонить"
+    },
+    "lang_aria": {
+      "en": "Language",
+      "ka": "ენა",
+      "ru": "Язык"
+    },
+    "h1": {
+      "en": "Biryani worth the wait.",
+      "ka": "ბირიანი, რომელიც ლოდინად ღირს.",
+      "ru": "Бирьяни, который стоит ожидания."
+    },
+    "lead": {
+      "en": "An Andhra kitchen in the heart of Batumi. Biryani, pulao and South Indian favourites, cooked fresh to order.",
+      "ka": "ანდჰრული სამზარეულო ბათუმის გულში. ბირიანი, პულაო და სამხრეთ ინდური კერძები, ახლად მომზადებული შეკვეთისთანავე.",
+      "ru": "Андхрская кухня в самом сердце Батуми. Бирьяни, плов и любимые блюда Южной Индии, готовим свежими под заказ."
+    },
+    "cta_order": {
+      "en": "Start your order",
+      "ka": "შეკვეთის დაწყება",
+      "ru": "Сделать заказ"
+    },
+    "cta_find": {
+      "en": "Find us",
+      "ka": "მოგვძებნეთ",
+      "ru": "Как нас найти"
+    },
+    "fact1": {
+      "en": "Delivery or pickup",
+      "ka": "მიტანა ან გატანა",
+      "ru": "Доставка или самовывоз"
+    },
+    "fact2": {
+      "en": "Order on WhatsApp",
+      "ka": "შეკვეთა WhatsApp-ით",
+      "ru": "Заказ через WhatsApp"
+    },
+    "fact3": {
+      "en": "Dishes from GEL {p}",
+      "ka": "კერძები {p} ლარიდან",
+      "ru": "Блюда от {p} GEL"
+    },
+    "ring": {
+      "en": "BIRYANI POINT ✺ ANDHRA & SOUTH INDIAN ✺ BATUMI ✺ BIRYANI POINT ✺ ANDHRA & SOUTH INDIAN ✺ BATUMI ✺",
+      "ka": "BIRYANI POINT ✺ ანდჰრული და სამხრეთ ინდური ✺ ბათუმი ✺ BIRYANI POINT ✺ ანდჰრული და სამხრეთ ინდური ✺ ბათუმი ✺",
+      "ru": "BIRYANI POINT ✺ АНДХРСКАЯ И ЮЖНОИНДИЙСКАЯ КУХНЯ ✺ БАТУМИ ✺ BIRYANI POINT ✺ АНДХРСКАЯ И ЮЖНОИНДИЙСКАЯ КУХНЯ ✺ БАТУМИ ✺"
+    },
+    "diet_aria": {
+      "en": "Filter by diet",
+      "ka": "ფილტრი",
+      "ru": "Фильтр"
+    },
+    "all": {
+      "en": "All",
+      "ka": "ყველა",
+      "ru": "Все"
+    },
+    "veg": {
+      "en": "Veg",
+      "ka": "უხორცო",
+      "ru": "Без мяса"
+    },
+    "nonveg": {
+      "en": "Non-veg",
+      "ka": "ხორციანი",
+      "ru": "С мясом"
+    },
+    "veg_aria": {
+      "en": "Vegetarian",
+      "ka": "ვეგეტარიანული",
+      "ru": "Вегетарианское"
+    },
+    "nonveg_aria": {
+      "en": "Contains meat",
+      "ka": "შეიცავს ხორცს",
+      "ru": "Содержит мясо"
+    },
+    "search": {
+      "en": "Search",
+      "ka": "ძებნა",
+      "ru": "Поиск"
+    },
+    "search_aria": {
+      "en": "Search the menu",
+      "ka": "მენიუში ძებნა",
+      "ru": "Поиск по меню"
+    },
+    "nores_t": {
+      "en": "No dishes match your filters",
+      "ka": "ფილტრს არცერთი კერძი არ შეესაბამება",
+      "ru": "Нет блюд по вашему запросу"
+    },
+    "nores_s": {
+      "en": "Try another word, or switch the filter back to All.",
+      "ka": "სცადეთ სხვა სიტყვა ან აირჩიეთ „ყველა“.",
+      "ru": "Попробуйте другое слово или выберите «Все»."
+    },
+    "popular": {
+      "en": "Popular",
+      "ka": "პოპულარული",
+      "ru": "Хит"
+    },
+    "add": {
+      "en": "Add",
+      "ka": "დამატება",
+      "ru": "Добавить"
+    },
+    "add_aria": {
+      "en": "Add {n} to order",
+      "ka": "{n} — შეკვეთაში დამატება",
+      "ru": "Добавить {n} в заказ"
+    },
+    "less_aria": {
+      "en": "Remove one {n}",
+      "ka": "ერთით ნაკლები: {n}",
+      "ru": "Убрать одну порцию: {n}"
+    },
+    "more_aria": {
+      "en": "Add another {n}",
+      "ka": "ერთით მეტი: {n}",
+      "ru": "Добавить ещё: {n}"
+    },
+    "again_t": {
+      "en": "Order again",
+      "ka": "ხელახლა შეკვეთა",
+      "ru": "Повторить заказ"
+    },
+    "again_btn": {
+      "en": "Add all",
+      "ka": "ყველას დამატება",
+      "ru": "Добавить всё"
+    },
+    "visit_t": {
+      "en": "Find us in Batumi.",
+      "ka": "მოგვძებნეთ ბათუმში.",
+      "ru": "Мы в Батуми."
+    },
+    "street": {
+      "en": "7 Sherif Khimshiashvili St",
+      "ka": "შერიფ ხიმშიაშვილის ქ. 7",
+      "ru": "ул. Шерифа Химшиашвили, 7"
+    },
+    "city": {
+      "en": "Batumi 6010, Georgia",
+      "ka": "ბათუმი 6010, საქართველო",
+      "ru": "Батуми 6010, Грузия"
+    },
+    "wa_phone": {
+      "en": "WhatsApp and phone",
+      "ka": "WhatsApp და ტელეფონი",
+      "ru": "WhatsApp и телефон"
+    },
+    "directions": {
+      "en": "Get directions",
+      "ka": "მარშრუტი",
+      "ru": "Маршрут"
+    },
+    "call": {
+      "en": "Call us",
+      "ka": "დაგვირეკეთ",
+      "ru": "Позвонить"
+    },
+    "review_t": {
+      "en": "Enjoyed your meal?",
+      "ka": "მოგეწონათ?",
+      "ru": "Понравилось?"
+    },
+    "review_s": {
+      "en": "A Google review helps other people find us.",
+      "ka": "Google-ზე თქვენი შეფასება სხვებსაც დაეხმარება ჩვენს პოვნაში.",
+      "ru": "Отзыв в Google помогает другим найти нас."
+    },
+    "review_a": {
+      "en": "Leave a review",
+      "ka": "შეფასების დატოვება",
+      "ru": "Оставить отзыв"
+    },
+    "map_title": {
+      "en": "Map showing Biryani Point in Batumi",
+      "ka": "Biryani Point-ის მდებარეობა რუკაზე",
+      "ru": "Biryani Point на карте"
+    },
+    "tagline": {
+      "en": "Andhra & South Indian restaurant",
+      "ka": "ანდჰრული და სამხრეთ ინდური სამზარეულოს რესტორანი",
+      "ru": "Ресторан андхрской и южноиндийской кухни"
+    },
+    "f_order": {
+      "en": "Order",
+      "ka": "შეკვეთა",
+      "ru": "Заказ"
+    },
+    "f_visit": {
+      "en": "Visit",
+      "ka": "მისამართი",
+      "ru": "Адрес"
+    },
+    "f_map": {
+      "en": "Map",
+      "ka": "რუკა",
+      "ru": "Карта"
+    },
+    "f_dir": {
+      "en": "Directions",
+      "ka": "მარშრუტი",
+      "ru": "Маршрут"
+    },
+    "review_bar": {
+      "en": "Review order",
+      "ka": "შეკვეთის ნახვა",
+      "ru": "Мой заказ"
+    },
+    "your_order": {
+      "en": "Your order",
+      "ka": "თქვენი შეკვეთა",
+      "ru": "Ваш заказ"
+    },
+    "close": {
+      "en": "Close",
+      "ka": "დახურვა",
+      "ru": "Закрыть"
+    },
+    "each": {
+      "en": "GEL {p} each",
+      "ka": "ცალი {p} GEL",
+      "ru": "{p} GEL за шт."
+    },
+    "subtotal": {
+      "en": "Subtotal",
+      "ka": "ჯამი",
+      "ru": "Сумма"
+    },
+    "delivery_fee": {
+      "en": "Delivery",
+      "ka": "მიტანა",
+      "ru": "Доставка"
+    },
+    "free": {
+      "en": "Free",
+      "ka": "უფასო",
+      "ru": "Бесплатно"
+    },
+    "total": {
+      "en": "Total",
+      "ka": "სულ",
+      "ru": "Итого"
+    },
+    "min_order": {
+      "en": "Minimum order for delivery is GEL {m}. Add GEL {r} more, or choose pickup.",
+      "ka": "მიტანის მინიმალური შეკვეთაა {m} GEL. დაამატეთ კიდევ {r} GEL ან აირჩიეთ გატანა.",
+      "ru": "Минимальный заказ для доставки — {m} GEL. Добавьте ещё {r} GEL или выберите самовывоз."
+    },
+    "details": {
+      "en": "Your details",
+      "ka": "თქვენი მონაცემები",
+      "ru": "Ваши данные"
+    },
+    "name": {
+      "en": "Name",
+      "ka": "სახელი",
+      "ru": "Имя"
+    },
+    "phone": {
+      "en": "Phone number",
+      "ka": "ტელეფონის ნომერი",
+      "ru": "Номер телефона"
+    },
+    "how": {
+      "en": "How would you like it?",
+      "ka": "მიღების ხერხი",
+      "ru": "Способ получения"
+    },
+    "delivery": {
+      "en": "Delivery",
+      "ka": "მიტანა",
+      "ru": "Доставка"
+    },
+    "pickup": {
+      "en": "Pickup",
+      "ka": "გატანა",
+      "ru": "Самовывоз"
+    },
+    "addr": {
+      "en": "Delivery address",
+      "ka": "მიტანის მისამართი",
+      "ru": "Адрес доставки"
+    },
+    "addr_ph": {
+      "en": "Street, building, apartment, floor",
+      "ka": "ქუჩა, შენობა, ბინა, სართული",
+      "ru": "Улица, дом, квартира, этаж"
+    },
+    "loc_btn": {
+      "en": "Share my location",
+      "ka": "ჩემი მდებარეობის გაზიარება",
+      "ru": "Отправить геолокацию"
+    },
+    "loc_wait": {
+      "en": "Finding you…",
+      "ka": "ვეძებთ…",
+      "ru": "Определяем…"
+    },
+    "loc_ok": {
+      "en": "Location added. The rider will get a map pin.",
+      "ka": "მდებარეობა დამატებულია. კურიერი რუკაზე ნიშნულს მიიღებს.",
+      "ru": "Геолокация добавлена. Курьер получит точку на карте."
+    },
+    "loc_rm": {
+      "en": "Remove",
+      "ka": "წაშლა",
+      "ru": "Убрать"
+    },
+    "loc_err": {
+      "en": "Couldn't get your location. Please type your address.",
+      "ka": "მდებარეობის დადგენა ვერ მოხერხდა. გთხოვთ, ჩაწეროთ მისამართი.",
+      "ru": "Не удалось определить местоположение. Укажите адрес вручную."
+    },
+    "when": {
+      "en": "When",
+      "ka": "როდის",
+      "ru": "Когда"
+    },
+    "asap": {
+      "en": "As soon as possible",
+      "ka": "რაც შეიძლება მალე",
+      "ru": "Как можно скорее"
+    },
+    "later": {
+      "en": "Choose a time",
+      "ka": "დროის არჩევა",
+      "ru": "Ко времени"
+    },
+    "time": {
+      "en": "Time",
+      "ka": "დრო",
+      "ru": "Время"
+    },
+    "spice": {
+      "en": "Spice level",
+      "ka": "სიცხარე",
+      "ru": "Острота"
+    },
+    "mild": {
+      "en": "Mild",
+      "ka": "მსუბუქი",
+      "ru": "Не острое"
+    },
+    "medium": {
+      "en": "Medium",
+      "ka": "საშუალო",
+      "ru": "Средне"
+    },
+    "spicy": {
+      "en": "Spicy",
+      "ka": "ცხარე",
+      "ru": "Остро"
+    },
+    "notes": {
+      "en": "Notes for the kitchen",
+      "ka": "შენიშვნა სამზარეულოსთვის",
+      "ru": "Комментарий для кухни"
+    },
+    "optional": {
+      "en": "(optional)",
+      "ka": "(არასავალდებულო)",
+      "ru": "(необязательно)"
+    },
+    "notes_ph": {
+      "en": "Allergies, extra raita, no onions…",
+      "ka": "ალერგია, დამატებითი რაიტა, ხახვის გარეშე…",
+      "ru": "Аллергии, больше раиты, без лука…"
+    },
+    "remember": {
+      "en": "Remember my details on this device",
+      "ka": "დაიმახსოვრე ჩემი მონაცემები ამ მოწყობილობაზე",
+      "ru": "Запомнить мои данные на этом устройстве"
+    },
+    "send": {
+      "en": "Send order on WhatsApp · GEL {t}",
+      "ka": "გაგზავნა WhatsApp-ით · {t} GEL",
+      "ru": "Отправить в WhatsApp · {t} GEL"
+    },
+    "hint": {
+      "en": "Opens WhatsApp with your order filled in. Nothing is charged here.",
+      "ka": "გაიხსნება WhatsApp შევსებული შეკვეთით. აქ თანხა არ ჩამოგეჭრებათ.",
+      "ru": "Откроется WhatsApp с готовым заказом. Здесь ничего не списывается."
+    },
+    "empty_t": {
+      "en": "Nothing here yet",
+      "ka": "ჯერ ცარიელია",
+      "ru": "Пока пусто"
+    },
+    "empty_s": {
+      "en": "Add a dish from the menu to start your order.",
+      "ka": "შეკვეთის დასაწყებად დაამატეთ კერძი მენიუდან.",
+      "ru": "Добавьте блюдо из меню, чтобы начать заказ."
+    },
+    "browse": {
+      "en": "Browse the menu",
+      "ka": "მენიუს ნახვა",
+      "ru": "Открыть меню"
+    },
+    "err": {
+      "en": "Please add: {f}.",
+      "ka": "გთხოვთ, მიუთითოთ: {f}.",
+      "ru": "Пожалуйста, укажите: {f}."
+    },
+    "e_name": {
+      "en": "your name",
+      "ka": "სახელი",
+      "ru": "имя"
+    },
+    "e_phone": {
+      "en": "a phone number",
+      "ka": "ტელეფონის ნომერი",
+      "ru": "номер телефона"
+    },
+    "e_addr": {
+      "en": "a delivery address",
+      "ka": "მიტანის მისამართი",
+      "ru": "адрес доставки"
+    },
+    "e_time": {
+      "en": "a time",
+      "ka": "დრო",
+      "ru": "время"
+    },
+    "closed_note": {
+      "en": "We're closed right now and open {next}. You can still send your order and we'll confirm it when we open.",
+      "ka": "ახლა დაკეტილი ვართ, გავიხსნებით {next}. შეკვეთის გაგზავნა მაინც შეგიძლიათ, გახსნისას დაგიდასტურებთ.",
+      "ru": "Сейчас мы закрыты, откроемся {next}. Вы всё равно можете отправить заказ, мы подтвердим его после открытия."
+    },
+    "st_open": {
+      "en": "Open now, until {t}",
+      "ka": "ღიაა {t}-მდე",
+      "ru": "Открыто до {t}"
+    },
+    "st_closed": {
+      "en": "Closed, opens {next}",
+      "ka": "დაკეტილია, გაიხსნება {next}",
+      "ru": "Закрыто, откроемся {next}"
+    },
+    "st_closed0": {
+      "en": "Closed",
+      "ka": "დაკეტილია",
+      "ru": "Закрыто"
+    },
+    "n_today": {
+      "en": "today at {t}",
+      "ka": "დღეს {t}-ზე",
+      "ru": "сегодня в {t}"
+    },
+    "n_tomorrow": {
+      "en": "tomorrow at {t}",
+      "ka": "ხვალ {t}-ზე",
+      "ru": "завтра в {t}"
+    },
+    "n_day": {
+      "en": "{d} at {t}",
+      "ka": "{d} {t}-ზე",
+      "ru": "{d} в {t}"
+    },
+    "item_add": {
+      "en": "Add to order · GEL {p}",
+      "ka": "დამატება · {p} GEL",
+      "ru": "Добавить · {p} GEL"
+    },
+    "item_upd": {
+      "en": "Update order · GEL {p}",
+      "ka": "განახლება · {p} GEL",
+      "ru": "Обновить · {p} GEL"
+    },
+    "qty": {
+      "en": "Quantity",
+      "ka": "რაოდენობა",
+      "ru": "Количество"
+    },
+    "sent_t": {
+      "en": "Almost done!",
+      "ka": "თითქმის მზადაა!",
+      "ru": "Почти готово!"
+    },
+    "sent_s": {
+      "en": "Your order {id} is waiting in WhatsApp. Press send there to place it, and we'll reply to confirm.",
+      "ka": "თქვენი შეკვეთა {id} მზადაა WhatsApp-ში. შეკვეთის განსათავსებლად იქ დააჭირეთ გაგზავნას, ჩვენ დადასტურებას გამოგიგზავნით.",
+      "ru": "Ваш заказ {id} ждёт в WhatsApp. Нажмите там «Отправить», и мы ответим с подтверждением."
+    },
+    "sent_done": {
+      "en": "Done, start a new order",
+      "ka": "მზადაა, ახალი შეკვეთა",
+      "ru": "Готово, новый заказ"
+    },
+    "sold_out": {
+      "en": "Sold out",
+      "ka": "ამოიწურა",
+      "ru": "Нет в наличии"
+    },
+    "removed": {
+      "en": "{n} is sold out and was removed from your order.",
+      "ka": "{n} ამოიწურა და შეკვეთიდან ამოიშალა.",
+      "ru": "{n} закончилось и удалено из заказа."
+    },
+    "sent_again": {
+      "en": "Open WhatsApp again",
+      "ka": "WhatsApp-ის ხელახლა გახსნა",
+      "ru": "Открыть WhatsApp снова"
+    }
+  },
+  "plural": {
+    "en": [
+      "item",
+      "items"
+    ],
+    "ka": [
+      "კერძი"
+    ],
+    "ru": [
+      "блюдо",
+      "блюда",
+      "блюд"
+    ]
+  },
+  "daynames": {
+    "en": {
+      "Mon": "Monday",
+      "Tue": "Tuesday",
+      "Wed": "Wednesday",
+      "Thu": "Thursday",
+      "Fri": "Friday",
+      "Sat": "Saturday",
+      "Sun": "Sunday"
+    },
+    "ka": {
+      "Mon": "ორშაბათს",
+      "Tue": "სამშაბათს",
+      "Wed": "ოთხშაბათს",
+      "Thu": "ხუთშაბათს",
+      "Fri": "პარასკევს",
+      "Sat": "შაბათს",
+      "Sun": "კვირას"
+    },
+    "ru": {
+      "Mon": "в понедельник",
+      "Tue": "во вторник",
+      "Wed": "в среду",
+      "Thu": "в четверг",
+      "Fri": "в пятницу",
+      "Sat": "в субботу",
+      "Sun": "в воскресенье"
+    }
+  }
+}

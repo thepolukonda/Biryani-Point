@@ -1,0 +1,7 @@
+.next
+node_modules
+coverage
+supabase/.temp
+src/lib/supabase/database.types.ts
+scripts/prototype-data.json
+package-lock.json

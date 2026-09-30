@@ -1,0 +1,4 @@
+group,group (ka),group (ru),option,option (ka),option (ru),price,required,max,default,sold out
+Spice level,სიცხარე,Острота,Mild,მსუბუქი,Не острое,0,yes,1,no,no
+Spice level,სიცხარე,Острота,Medium,საშუალო,Средне,0,,,yes,no
+Spice level,სიცხარე,Острота,Spicy,ცხარე,Остро,0,,,no,no

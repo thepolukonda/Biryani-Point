@@ -1,0 +1,247 @@
+/*
+ * Thermal-printer tickets (58 / 80 mm). Everything is black on white, sized in mm, and
+ * uses solid borders instead of grey fills, which thermal printers print as noise.
+ * The paper width comes from --paper (set by the page from the Printers settings).
+ */
+.tk-page {
+  --paper: 80mm;
+  min-height: 100dvh;
+  background: #e9e6e1;
+  padding: 16px;
+  display: grid;
+  justify-content: center;
+  align-content: start;
+  gap: 16px;
+  color: #000;
+}
+.tk {
+  width: var(--paper);
+  padding: 4mm 3.5mm 6mm;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.12),
+    0 8px 24px rgb(0 0 0 / 0.1);
+  font-family: var(--font-onest), var(--font-georgian), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  /* Break a word only if it can't fit on a line by itself (long addresses, URLs). */
+  overflow-wrap: break-word;
+}
+.tk hr {
+  border: 0;
+  border-top: 1px dashed #000;
+  margin: 2.5mm 0;
+}
+.tk hr.tk-solid {
+  border-top: 1.5px solid #000;
+}
+.tk-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 3mm;
+}
+.tk-row > :first-child {
+  min-width: 0;
+}
+.tk-c {
+  text-align: center;
+}
+.tk-r {
+  text-align: right;
+}
+.tk-b {
+  font-weight: 800;
+}
+.tk-num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* Label / value rows: the short label never wraps, the value (e.g. an address) does. */
+.tk-meta .tk-row > :first-child {
+  flex: none;
+}
+.tk-meta .tk-num {
+  white-space: normal;
+}
+.tk-small {
+  font-size: 10.5px;
+}
+.tk-gap {
+  margin-top: 1.2mm;
+}
+
+/* Bill */
+.tk-brand {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+}
+.tk-tag {
+  font-size: 11px;
+}
+.tk-title {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin: 1mm 0;
+}
+.tk-meta .tk-row {
+  font-size: 11.5px;
+}
+.tk-line {
+  margin: 1.4mm 0;
+}
+.tk-opt {
+  padding-left: 5mm;
+  font-size: 11px;
+}
+.tk-total {
+  font-size: 17px;
+  font-weight: 800;
+}
+.tk-due {
+  display: flex;
+  justify-content: space-between;
+  border: 1.5px solid #000;
+  padding: 1.5mm 2mm;
+  margin-top: 2mm;
+  font-weight: 800;
+}
+.tk-qr {
+  width: 24mm;
+  margin: 1mm auto;
+}
+.tk-qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* KOT: big and bold, readable at arm's length */
+/* Capitals only for Latin and Cyrillic: Georgian capitals (Mtavruli) are hard to read. */
+.tk-kot:lang(ka) .tk-kot-n,
+.tk-kot:lang(ka) .tk-kot-mod,
+.tk-kot:lang(ka) .tk-kot-inote {
+  text-transform: none;
+}
+.tk-kot {
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, var(--font-georgian), monospace;
+  font-size: 13px;
+}
+.tk-kot-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2mm;
+}
+.tk-kot-no {
+  background: #000;
+  color: #fff;
+  padding: 1mm 2.5mm;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.tk-kot-type {
+  display: grid;
+  place-items: center;
+  border: 2px solid #000;
+  padding: 1mm 2mm;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.1;
+}
+.tk-kot-when {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 2mm;
+}
+.tk-flag {
+  display: inline-block;
+  margin-top: 1.5mm;
+  border: 2px solid #000;
+  padding: 0 2mm;
+  font-weight: 800;
+}
+.tk-kot-item {
+  display: grid;
+  grid-template-columns: 11mm 1fr;
+  gap: 0 1.5mm;
+  margin: 2.2mm 0;
+}
+.tk-kot-q {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.05;
+}
+.tk-kot-n {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.tk-kot-mod {
+  grid-column: 2;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.tk-kot-inote {
+  grid-column: 2;
+  margin-top: 0.5mm;
+  border-left: 3px solid #000;
+  padding-left: 1.5mm;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.tk-veg {
+  margin-left: 1mm;
+  border: 1.5px solid #000;
+  padding: 0 1mm;
+  font-size: 10px;
+  vertical-align: 2px;
+}
+.tk-kot-note {
+  margin-top: 2mm;
+  border: 2px solid #000;
+  padding: 1.5mm 2mm;
+  font-size: 13px;
+  font-weight: 800;
+}
+.tk-kot-lbl {
+  background: #000;
+  color: #fff;
+  padding: 0 1.5mm;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  .tk-page {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    background: #fff;
+  }
+  .tk {
+    width: 100%;
+    box-shadow: none;
+    break-after: page;
+  }
+  .tk:last-child {
+    break-after: auto;
+  }
+  .tk-screen-only {
+    display: none !important;
+  }
+}

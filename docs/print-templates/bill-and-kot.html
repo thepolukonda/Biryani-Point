@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bill &amp; KOT templates</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;800&family=Noto+Sans+Georgian:wght@400;600;800&family=JetBrains+Mono:wght@500;800&display=swap"
+      rel="stylesheet"
+    />
+    <!--
+  Template preview for the customer bill and the Kitchen Order Ticket (KOT).
+  Sample data only. Printed from the admin board on an 80 mm (or 58 mm) thermal printer
+  through the browser's print dialog. No printer driver or app needed.
+-->
+    <style>
+      :root {
+        --paper-w: 80mm;
+        --ink: #111;
+        --muted: #555;
+        --page: #e9e6e1;
+        --panel: #fff;
+        --accent: #b5462a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--page);
+        color: var(--ink);
+        font:
+          14px/1.4 Onest,
+          'Noto Sans Georgian',
+          system-ui,
+          sans-serif;
+      }
+
+      /* ---------- Screen-only controls ---------- */
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 20px;
+        align-items: center;
+        padding: 12px 16px;
+        background: #1d1b19;
+        color: #f5f1ea;
+      }
+      .toolbar h1 {
+        font-size: 15px;
+        margin: 0 8px 0 0;
+      }
+      .toolbar fieldset {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .toolbar legend {
+        float: left;
+        margin-right: 6px;
+        font-size: 12px;
+        opacity: 0.75;
+      }
+      .toolbar label {
+        cursor: pointer;
+      }
+      .toolbar input {
+        position: absolute;
+        opacity: 0;
+      }
+      .toolbar span.chip {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #5a554f;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .toolbar input:checked + span.chip {
+        background: #f5f1ea;
+        color: #1d1b19;
+        border-color: #f5f1ea;
+      }
+      .toolbar input:focus-visible + span.chip {
+        outline: 2px solid #f0b35a;
+        outline-offset: 2px;
+      }
+
+      .stage {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 32px;
+        padding: 28px 16px 48px;
+      }
+      .col h2 {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 0 0 4px;
+        color: #3b3632;
+      }
+      .col p.hint {
+        margin: 0 0 12px;
+        font-size: 12px;
+        color: #6b645d;
+        max-width: var(--paper-w);
+      }
+      .col button {
+        margin-top: 12px;
+        font: inherit;
+        font-size: 13px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid #1d1b19;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      /* ---------- The paper ---------- */
+      .ticket {
+        width: var(--paper-w);
+        padding: 4mm 3.5mm 6mm;
+        background: var(--panel);
+        box-shadow:
+          0 1px 2px rgba(0, 0, 0, 0.12),
+          0 8px 24px rgba(0, 0, 0, 0.1);
+        border-bottom: 2px dashed #bbb;
+        font-size: 12px;
+      }
+      .c {
+        text-align: center;
+      }
+      .r {
+        text-align: right;
+      }
+      .b {
+        font-weight: 800;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      hr {
+        border: 0;
+        border-top: 1px dashed #000;
+        margin: 2.5mm 0;
+      }
+      hr.solid {
+        border-top: 1.5px solid #000;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 3mm;
+      }
+      .row > :first-child {
+        min-width: 0;
+      }
+
+      /* Bill */
+      .brand {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        line-height: 1.1;
+      }
+      .tag {
+        font-size: 11px;
+      }
+      .doc-title {
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        margin: 1mm 0;
+      }
+      .meta .row {
+        font-size: 11.5px;
+      }
+      .items .line {
+        margin: 1.4mm 0;
+      }
+      .items .opt {
+        padding-left: 5mm;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .total {
+        font-size: 17px;
+        font-weight: 800;
+      }
+      .due {
+        border: 1.5px solid #000;
+        padding: 1.5mm 2mm;
+        margin-top: 2mm;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 800;
+      }
+      .qr {
+        width: 22mm;
+        height: 22mm;
+        margin: 2mm auto 1mm;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        border: 1px solid #000;
+        font-size: 9px;
+        line-height: 1.2;
+        background: repeating-conic-gradient(#000 0 25%, #fff 0 50%) 0 0 / 3mm 3mm;
+      }
+      .qr span {
+        background: #fff;
+        padding: 1px 3px;
+      }
+      .small {
+        font-size: 10px;
+      }
+
+      /* KOT: big, bold, no prices, readable from arm's length */
+      .kot {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 13px;
+      }
+      .kot .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 2mm;
+      }
+      .kot .no {
+        background: #000;
+        color: #fff;
+        padding: 1mm 2.5mm;
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.1;
+      }
+      .kot .type {
+        border: 2px solid #000;
+        padding: 1mm 2mm;
+        font-size: 15px;
+        font-weight: 800;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        line-height: 1.1;
+      }
+      .kot .when {
+        font-size: 18px;
+        font-weight: 800;
+        margin: 2mm 0 0;
+      }
+      .kot .flag {
+        display: inline-block;
+        border: 2px solid #000;
+        padding: 0 2mm;
+        font-weight: 800;
+        margin: 1.5mm 0 0;
+      }
+      .kot .flag.inv {
+        background: #000;
+        color: #fff;
+      }
+      .kot .it {
+        display: grid;
+        grid-template-columns: 11mm 1fr;
+        gap: 0 1.5mm;
+        margin: 2.2mm 0;
+      }
+      .kot .q {
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 1.05;
+      }
+      .kot .n {
+        font-size: 15px;
+        font-weight: 800;
+        line-height: 1.15;
+        text-transform: uppercase;
+      }
+      .kot .mod {
+        grid-column: 2;
+        font-size: 13px;
+        font-weight: 800;
+      }
+      .kot .inote {
+        grid-column: 2;
+        font-size: 12.5px;
+        font-weight: 800;
+        border-left: 3px solid #000;
+        padding-left: 1.5mm;
+        margin-top: 0.5mm;
+      }
+      .kot .veg {
+        font-size: 10px;
+        border: 1.5px solid #000;
+        padding: 0 1mm;
+        margin-left: 1mm;
+        vertical-align: 2px;
+      }
+      .kot .onote {
+        border: 2px solid #000;
+        padding: 1.5mm 2mm;
+        font-weight: 800;
+        font-size: 13px;
+        margin-top: 2mm;
+      }
+      .kot .onote .lbl {
+        background: #000;
+        color: #fff;
+        padding: 0 1.5mm;
+        margin-right: 1mm;
+      }
+
+      /* ---------- Printing ---------- */
+      @media print {
+        body {
+          background: #fff;
+        }
+        .toolbar,
+        .col h2,
+        .col p.hint,
+        .col button {
+          display: none !important;
+        }
+        .stage {
+          display: block;
+          padding: 0;
+        }
+        .col {
+          break-after: page;
+        }
+        .col.skip {
+          display: none;
+        }
+        .ticket {
+          box-shadow: none;
+          border: 0;
+          width: 100%;
+        }
+      }
+    </style>
+    <style id="page-size">
+      @page {
+        size: 80mm auto;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="toolbar" id="controls" aria-label="Preview options">
+      <h1>Bill &amp; KOT templates</h1>
+      <fieldset>
+        <legend>Paper</legend>
+        <label
+          ><input type="radio" name="paper" value="80mm" checked /><span class="chip"
+            >80 mm</span
+          ></label
+        >
+        <label
+          ><input type="radio" name="paper" value="58mm" /><span class="chip">58 mm</span></label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>Bill language</legend>
+        <label
+          ><input type="radio" name="lang" value="en" checked /><span class="chip"
+            >English</span
+          ></label
+        >
+        <label
+          ><input type="radio" name="lang" value="ka" /><span class="chip">ქართული</span></label
+        >
+        <label
+          ><input type="radio" name="lang" value="ru" /><span class="chip">Русский</span></label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>Order</legend>
+        <label
+          ><input type="radio" name="type" value="delivery" checked /><span class="chip"
+            >Delivery</span
+          ></label
+        >
+        <label
+          ><input type="radio" name="type" value="pickup" /><span class="chip">Pickup</span></label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>Time</legend>
+        <label
+          ><input type="radio" name="when" value="asap" checked /><span class="chip"
+            >ASAP</span
+          ></label
+        >
+        <label
+          ><input type="radio" name="when" value="scheduled" /><span class="chip"
+            >Scheduled</span
+          ></label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>Copy</legend>
+        <label
+          ><input type="radio" name="copy" value="original" checked /><span class="chip"
+            >First print</span
+          ></label
+        >
+        <label
+          ><input type="radio" name="copy" value="reprint" /><span class="chip"
+            >Reprint</span
+          ></label
+        >
+      </fieldset>
+    </form>
+
+    <main class="stage">
+      <section class="col" id="bill-col">
+        <h2>Customer bill</h2>
+        <p class="hint">
+          Goes in the bag with the order. Printed in the customer's language (they chose it on the
+          website).
+        </p>
+        <article class="ticket" id="bill" aria-label="Customer bill preview"></article>
+        <button type="button" data-print="bill">Print bill only</button>
+      </section>
+      <section class="col" id="kot-col">
+        <h2>KOT (kitchen order ticket)</h2>
+        <p class="hint">
+          For the chef. Printed automatically when an order is accepted. Big type, no prices,
+          English dish names.
+        </p>
+        <article class="ticket kot" id="kot" aria-label="Kitchen order ticket preview"></article>
+        <button type="button" data-print="kot">Print KOT only</button>
+      </section>
+    </main>
+
+    <script>
+      // ---------------- Sample order (the shape the real `orders` + `order_items` rows have) ---------------
+      const restaurant = {
+        name: 'BIRYANI POINT',
+        tagline: {
+          en: 'South Indian kitchen · Batumi',
+          ka: 'სამხრეთ ინდური სამზარეულო · ბათუმი',
+          ru: 'Южноиндийская кухня · Батуми',
+        },
+        address: 'Batumi, [street address]',
+        phone: '+995 5XX XX XX XX',
+        legalName: '[Legal name / Individual Entrepreneur]',
+        taxId: '[ID code]',
+        site: 'biryanipoint.ge',
+      };
+
+      const order = {
+        number: 1024,
+        publicId: 'k3Jd9QpL2mX8vT1aZr5c',
+        createdAt: '2026-09-29T19:18:00+04:00',
+        acceptedAt: '2026-09-29T19:20:00+04:00',
+        prepMinutes: 25,
+        scheduledFor: '2026-09-29T20:30:00+04:00',
+        customer: { name: 'Nino Beridze', phone: '+995555123456', locale: 'ka' },
+        address: 'Chavchavadze St 42, apt 7, 3rd floor, Batumi',
+        distanceKm: 2.4,
+        notes: 'Nut allergy! Please call on arrival, the doorbell is broken.',
+        items: [
+          {
+            name: 'Chicken Biryani',
+            qty: 2,
+            unit: 2000,
+            mods: [{ en: 'Spicy', ka: 'ცხარე', ru: 'Остро' }],
+          },
+          {
+            name: 'Fry Pieces Biryani (Boneless)',
+            qty: 1,
+            unit: 2200,
+            mods: [{ en: 'Medium', ka: 'საშუალო', ru: 'Средне' }],
+          },
+          {
+            name: 'Veg Dum Biryani',
+            qty: 1,
+            unit: 1800,
+            veg: true,
+            mods: [{ en: 'Mild', ka: 'მსუბუქი', ru: 'Не острое' }],
+            note: 'No onion',
+          },
+          { name: 'Chicken Noodles', qty: 2, unit: 2000, mods: [] },
+        ],
+        deliveryFee: 0,
+        discount: 0,
+        payment: 'cash',
+      };
+
+      // ---------------- Text on the bill, per customer language ----------------
+      const T = {
+        en: {
+          bill: 'BILL',
+          copy: 'COPY',
+          billNo: 'Bill no.',
+          order: 'Order',
+          date: 'Date',
+          type: 'Type',
+          delivery: 'Delivery',
+          pickup: 'Pickup',
+          time: 'Time',
+          asap: 'As soon as possible',
+          customer: 'Customer',
+          phone: 'Phone',
+          address: 'Address',
+          item: 'Item',
+          amount: 'Amount',
+          subtotal: 'Subtotal',
+          deliveryFee: 'Delivery',
+          free: 'Free',
+          discount: 'Discount',
+          total: 'TOTAL',
+          items: (n) => `${n} item${n === 1 ? '' : 's'}`,
+          pay: { cash: 'Cash on delivery', pay_at_pickup: 'Pay at pickup' },
+          toPay: 'TO PAY',
+          paid: 'PAID',
+          fiscal: 'Not a fiscal receipt. A fiscal receipt is issued when you pay.',
+          track: 'Scan to track your order',
+          thanks: 'Thank you! Enjoy your meal.',
+          review: 'Liked it? A Google review helps us a lot.',
+        },
+        ka: {
+          bill: 'ანგარიში',
+          copy: 'ასლი',
+          billNo: 'ანგარიში №',
+          order: 'შეკვეთა',
+          date: 'თარიღი',
+          type: 'ტიპი',
+          delivery: 'მიტანა',
+          pickup: 'გატანა',
+          time: 'დრო',
+          asap: 'რაც შეიძლება მალე',
+          customer: 'კლიენტი',
+          phone: 'ტელეფონი',
+          address: 'მისამართი',
+          item: 'კერძი',
+          amount: 'თანხა',
+          subtotal: 'ჯამი',
+          deliveryFee: 'მიტანა',
+          free: 'უფასო',
+          discount: 'ფასდაკლება',
+          total: 'სულ',
+          items: (n) => `${n} ერთეული`,
+          pay: { cash: 'ნაღდი ფული მიტანისას', pay_at_pickup: 'გადახდა გატანისას' },
+          toPay: 'გადასახდელი',
+          paid: 'გადახდილია',
+          fiscal: 'ეს არ არის ფისკალური ქვითარი. ფისკალური ქვითარი გაიცემა გადახდისას.',
+          track: 'დაასკანერეთ შეკვეთის სტატუსის სანახავად',
+          thanks: 'გმადლობთ! გემრიელად მიირთვით.',
+          review: 'მოგეწონათ? Google-ზე შეფასება ძალიან დაგვეხმარება.',
+        },
+        ru: {
+          bill: 'СЧЁТ',
+          copy: 'КОПИЯ',
+          billNo: 'Счёт №',
+          order: 'Заказ',
+          date: 'Дата',
+          type: 'Тип',
+          delivery: 'Доставка',
+          pickup: 'Самовывоз',
+          time: 'Время',
+          asap: 'Как можно скорее',
+          customer: 'Клиент',
+          phone: 'Телефон',
+          address: 'Адрес',
+          item: 'Блюдо',
+          amount: 'Сумма',
+          subtotal: 'Подытог',
+          deliveryFee: 'Доставка',
+          free: 'Бесплатно',
+          discount: 'Скидка',
+          total: 'ИТОГО',
+          items: (n) => `${n} шт.`,
+          pay: { cash: 'Наличными курьеру', pay_at_pickup: 'Оплата при получении' },
+          toPay: 'К ОПЛАТЕ',
+          paid: 'ОПЛАЧЕНО',
+          fiscal: 'Не является фискальным чеком. Фискальный чек выдаётся при оплате.',
+          track: 'Отсканируйте, чтобы следить за заказом',
+          thanks: 'Спасибо! Приятного аппетита.',
+          review: 'Понравилось? Отзыв в Google нам очень поможет.',
+        },
+      };
+      const LANG_NAME = { en: 'English', ka: 'Georgian', ru: 'Russian' };
+
+      // Same output as src/lib/domain/money.ts formatGel
+      function gel(tetri, lang) {
+        const neg = tetri < 0,
+          abs = Math.abs(tetri);
+        const whole = String(Math.floor(abs / 100)),
+          cents = String(abs % 100).padStart(2, '0');
+        const nb = ' ';
+        if (lang === 'en')
+          return `${neg ? '-' : ''}GEL${nb}${whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}.${cents}`;
+        const w = whole.replace(/\B(?=(\d{3})+(?!\d))/g, nb);
+        return `${neg ? '-' : ''}${w},${cents}${nb}${lang === 'ka' ? '₾' : 'GEL'}`;
+      }
+      // Always Batumi time, whatever the printing device's clock zone is
+      function tbilisi(iso, opts) {
+        return new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Tbilisi', ...opts }).format(
+          new Date(iso),
+        );
+      }
+      const hm = (iso) => tbilisi(iso, { hour: '2-digit', minute: '2-digit', hour12: false });
+      const dmy = (iso) => tbilisi(iso, { day: '2-digit', month: '2-digit', year: 'numeric' });
+      const addMin = (iso, m) => new Date(new Date(iso).getTime() + m * 60000).toISOString();
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"]/g,
+          (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c],
+        );
+      const prettyPhone = (p) =>
+        p.replace(/^\+995(\d{3})(\d{2})(\d{2})(\d{2})$/, '+995 $1 $2 $3 $4');
+
+      function renderBill({ lang, type, when, copy }) {
+        const t = T[lang];
+        const subtotal = order.items.reduce((s, i) => s + i.unit * i.qty, 0);
+        const fee = type === 'delivery' ? order.deliveryFee : 0;
+        const total = subtotal + fee - order.discount;
+        const count = order.items.reduce((s, i) => s + i.qty, 0);
+        const payLabel = t.pay[type === 'delivery' ? 'cash' : 'pay_at_pickup'];
+        const printedAt = copy === 'reprint' ? '2026-09-29T19:52:00+04:00' : order.acceptedAt;
+
+        return `
+    <div class="c">
+      <div class="brand">${restaurant.name}</div>
+      <div class="tag">${esc(restaurant.tagline[lang])}</div>
+      <div class="small muted">${esc(restaurant.address)}<br>${esc(restaurant.phone)} · ${restaurant.site}</div>
+      <div class="small muted">${esc(restaurant.legalName)} · ${esc(restaurant.taxId)}</div>
+    </div>
+    <hr class="solid">
+    <div class="c doc-title">${t.bill}${copy === 'reprint' ? ` · ${t.copy}` : ''}</div>
+    <div class="meta">
+      <div class="row"><span>${t.billNo}</span><b class="num">BP-${order.number}</b></div>
+      <div class="row"><span>${t.date}</span><span class="num">${dmy(order.createdAt)} ${hm(order.createdAt)}</span></div>
+      <div class="row"><span>${t.type}</span><b>${type === 'delivery' ? t.delivery : t.pickup}</b></div>
+      <div class="row"><span>${t.time}</span><span class="num">${when === 'asap' ? t.asap : `${dmy(order.scheduledFor)} ${hm(order.scheduledFor)}`}</span></div>
+      <div class="row"><span>${t.customer}</span><span>${esc(order.customer.name)}</span></div>
+      <div class="row"><span>${t.phone}</span><span class="num">${prettyPhone(order.customer.phone)}</span></div>
+      ${type === 'delivery' ? `<div class="row"><span>${t.address}</span><span class="r">${esc(order.address)}</span></div>` : ''}
+    </div>
+    <hr>
+    <div class="row small muted"><span>${t.item}</span><span>${t.amount}</span></div>
+    <div class="items">
+      ${order.items
+        .map(
+          (i) => `
+        <div class="line">
+          <div class="row"><span>${i.qty} × ${esc(i.name)}</span><span class="num">${gel(i.unit * i.qty, lang)}</span></div>
+          ${i.qty > 1 ? `<div class="opt num">${i.qty} × ${gel(i.unit, lang)}</div>` : ''}
+          ${i.mods.map((m) => `<div class="opt">+ ${esc(m[lang])}</div>`).join('')}
+          ${i.note ? `<div class="opt">“${esc(i.note)}”</div>` : ''}
+        </div>`,
+        )
+        .join('')}
+    </div>
+    <hr>
+    <div class="row"><span>${t.subtotal} (${t.items(count)})</span><span class="num">${gel(subtotal, lang)}</span></div>
+    ${type === 'delivery' ? `<div class="row"><span>${t.deliveryFee}</span><span class="num">${fee ? gel(fee, lang) : t.free}</span></div>` : ''}
+    ${order.discount ? `<div class="row"><span>${t.discount}</span><span class="num">−${gel(order.discount, lang)}</span></div>` : ''}
+    <hr class="solid">
+    <div class="row total"><span>${t.total}</span><span class="num">${gel(total, lang)}</span></div>
+    <div class="due"><span>${t.toPay}</span><span class="num">${gel(total, lang)}</span></div>
+    <div class="small c" style="margin-top:1mm">${payLabel}</div>
+    <hr>
+    <div class="qr" aria-hidden="true"><span>QR</span></div>
+    <div class="c small">${t.track}<br><span class="muted">${restaurant.site}/${lang}/order/${order.publicId.slice(0, 6)}…</span></div>
+    <hr>
+    <div class="c b">${t.thanks}</div>
+    <div class="c small muted" style="margin-top:1mm">${t.review}</div>
+    <div class="c small muted" style="margin-top:2mm">${t.fiscal}</div>
+    <div class="c small muted" style="margin-top:1mm">${copy === 'reprint' ? `${t.copy} · ` : ''}${dmy(printedAt)} ${hm(printedAt)}</div>
+  `;
+      }
+
+      function renderKot({ type, when, copy }) {
+        const readyBy = addMin(order.acceptedAt, order.prepMinutes);
+        const count = order.items.reduce((s, i) => s + i.qty, 0);
+        const printedAt = copy === 'reprint' ? '2026-09-29T19:34:00+04:00' : order.acceptedAt;
+        const firstName = order.customer.name.split(' ')[0];
+
+        return `
+    <div class="head">
+      <div class="no">#${order.number}</div>
+      <div class="type">${type === 'delivery' ? 'DELIVERY' : 'PICKUP'}</div>
+    </div>
+    <div class="when">${
+      when === 'asap' ? `READY BY ${hm(readyBy)}` : `SCHEDULED ${hm(order.scheduledFor)}`
+    }</div>
+    <div class="small">${
+      when === 'asap'
+        ? `ASAP · accepted ${hm(order.acceptedAt)} · ${order.prepMinutes} min`
+        : `Start cooking ~${hm(addMin(order.scheduledFor, -order.prepMinutes))} · ${dmy(order.scheduledFor)}`
+    }</div>
+    ${copy === 'reprint' ? `<div class="flag inv">REPRINT · NOT A NEW ORDER</div>` : ''}
+    <hr class="solid">
+    ${order.items
+      .map(
+        (i) => `
+      <div class="it">
+        <div class="q">${i.qty}×</div>
+        <div class="n">${esc(i.name)}${i.veg ? '<span class="veg">VEG</span>' : ''}</div>
+        ${i.mods.map((m) => `<div class="mod">» ${esc(m.en.toUpperCase())}</div>`).join('')}
+        ${i.note ? `<div class="inote">${esc(i.note.toUpperCase())}</div>` : ''}
+      </div>`,
+      )
+      .join('')}
+    <hr class="solid">
+    <div class="row b"><span>ITEMS</span><span>${count}</span></div>
+    ${order.notes ? `<div class="onote"><span class="lbl">NOTE</span>${esc(order.notes)}</div>` : ''}
+    <hr>
+    <div class="row small"><span>Customer</span><span>${esc(firstName)}${order.customer.locale !== 'en' ? ` · speaks ${LANG_NAME[order.customer.locale]}` : ''}</span></div>
+    ${type === 'delivery' ? `<div class="row small"><span>Distance</span><span>${order.distanceKm} km</span></div>` : ''}
+    <div class="row small"><span>KOT</span><span>K-${order.number}-1</span></div>
+    <div class="row small"><span>Printed</span><span>${hm(printedAt)}${copy === 'reprint' ? ' (reprint)' : ''}</span></div>
+  `;
+      }
+
+      // ---------------- Wiring ----------------
+      const form = document.getElementById('controls');
+      function state() {
+        const f = new FormData(form);
+        return Object.fromEntries(
+          ['paper', 'lang', 'type', 'when', 'copy'].map((k) => [k, f.get(k)]),
+        );
+      }
+      function render() {
+        const s = state();
+        document.documentElement.style.setProperty('--paper-w', s.paper);
+        document.getElementById('page-size').textContent =
+          `@page { size: ${s.paper} auto; margin: 0; }`;
+        document.getElementById('bill').lang = s.lang;
+        document.getElementById('bill').innerHTML = renderBill(s);
+        document.getElementById('kot').innerHTML = renderKot(s);
+      }
+      form.addEventListener('change', render);
+      document.querySelectorAll('[data-print]').forEach((btn) =>
+        btn.addEventListener('click', () => {
+          const only = btn.dataset.print;
+          document.getElementById('bill-col').classList.toggle('skip', only !== 'bill');
+          document.getElementById('kot-col').classList.toggle('skip', only !== 'kot');
+          window.print();
+          document.querySelectorAll('.col').forEach((c) => c.classList.remove('skip'));
+        }),
+      );
+      render();
+    </script>
+  </body>
+</html>
