@@ -64,7 +64,7 @@ The restaurant owner's plain-language guide is [OWNER_GUIDE.md](OWNER_GUIDE.md).
   - Printer options are on **Printers**; the business name, ID code and VAT go under Settings → **Bill details**.
 - **Notifications:** new orders go to Telegram (free) and optionally email (Resend).
 
-**Payments:** cash on delivery or pay at pickup. An online gateway can be added later behind `src/lib/payments/` (see its README) without touching checkout.
+**Payments:** cash on delivery or pay at pickup. An online gateway can be added later behind `src/model-helpers/payments/` (see its README) without touching checkout.
 
 ## Local development
 
@@ -205,7 +205,7 @@ Only the **Menu** tab is required. It needs at least `name` and `price` columns.
 - [ ] Place a real test order on the live site from a phone (delivery and pickup), accept it on the Orders page, print it, mark it paid, complete it.
 - [ ] The Telegram group received the order.
 - [ ] **Admin → Settings → Business profile**: name, address, phone, WhatsApp, social links and texts are right in all three languages.
-- [ ] Read **Privacy**, **Terms** and **Refund policy** on the site. They state 6 years for keeping order records and 24 hours for complaints: change them in `src/content/legal.ts` if your accountant or lawyer says otherwise.
+- [ ] Read **Privacy**, **Terms** and **Refund policy** on the site. They state 6 years for keeping order records and 24 hours for complaints: change them in `src/views/content/legal.ts` if your accountant or lawyer says otherwise.
 - [ ] Opening hours, delivery zones, fees and minimum order are correct.
 - [ ] Sign-ups are off in Supabase (step 1.3), and the only accounts under **Admin → Staff** are yours.
 - [ ] Netlify function log shows `sheet-sync` running (step 3.4).
@@ -237,20 +237,20 @@ npx opennextjs-cloudflare deploy
 
 All of them are documented in [.env.example](.env.example).
 
-| Variable                                               | Required    | Where it's used                                         |
-| ------------------------------------------------------ | ----------- | ------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                                 | yes         | Canonical links, sitemap, social images, tracking links |
-| `NEXT_PUBLIC_SUPABASE_URL`                             | yes         | Database address                                        |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`                 | yes         | Browser key (protected by RLS)                          |
-| `SUPABASE_SECRET_KEY`                                  | yes         | **Server only.** Creates orders, runs the Sheet import  |
-| `IP_HASH_SALT`                                         | yes         | Hashes IPs for rate limiting (raw IPs are never stored) |
-| `CRON_SECRET`                                          | yes         | Protects the scheduled Sheet import                     |
-| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`               | recommended | New-order alerts                                        |
-| `RESEND_API_KEY`, `ORDER_EMAIL_FROM`, `ORDER_EMAIL_TO` | optional    | New-order email                                         |
-| `SHEET_*_CSV_URL`                                      | optional    | Fallback if the Sheet links aren't set in admin         |
-| `NEXT_PUBLIC_SENTRY_DSN`                               | optional    | Error tracking                                          |
-| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` / `NEXT_PUBLIC_UMAMI_*` | optional    | Analytics                                               |
-| `PAYMENT_PROVIDER`                                     | not yet     | Online payments (see `src/lib/payments/README.md`)      |
+| Variable                                               | Required    | Where it's used                                              |
+| ------------------------------------------------------ | ----------- | ------------------------------------------------------------ |
+| `NEXT_PUBLIC_SITE_URL`                                 | yes         | Canonical links, sitemap, social images, tracking links      |
+| `NEXT_PUBLIC_SUPABASE_URL`                             | yes         | Database address                                             |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`                 | yes         | Browser key (protected by RLS)                               |
+| `SUPABASE_SECRET_KEY`                                  | yes         | **Server only.** Creates orders, runs the Sheet import       |
+| `IP_HASH_SALT`                                         | yes         | Hashes IPs for rate limiting (raw IPs are never stored)      |
+| `CRON_SECRET`                                          | yes         | Protects the scheduled Sheet import                          |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`               | recommended | New-order alerts                                             |
+| `RESEND_API_KEY`, `ORDER_EMAIL_FROM`, `ORDER_EMAIL_TO` | optional    | New-order email                                              |
+| `SHEET_*_CSV_URL`                                      | optional    | Fallback if the Sheet links aren't set in admin              |
+| `NEXT_PUBLIC_SENTRY_DSN`                               | optional    | Error tracking                                               |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` / `NEXT_PUBLIC_UMAMI_*` | optional    | Analytics                                                    |
+| `PAYMENT_PROVIDER`                                     | not yet     | Online payments (see `src/model-helpers/payments/README.md`) |
 
 ## Commands
 
@@ -264,7 +264,7 @@ All of them are documented in [.env.example](.env.example).
 | `npm run typecheck`      | TypeScript                                                             |
 | `npm run format`         | Prettier                                                               |
 | `npm run db:reset`       | Rebuild the local database from `supabase/migrations` + `seed.sql`     |
-| `npm run db:types`       | Regenerate `src/lib/supabase/database.types.ts` after changing the SQL |
+| `npm run db:types`       | Regenerate `src/models/db/database.types.ts` after changing the SQL    |
 | `npm run seed:generate`  | Rebuild `supabase/seed.sql` from the Sheet template data               |
 | `npm run seed:images`    | Upload the dish photos to Storage                                      |
 | `npm run sheet:template` | Rebuild `docs/sheet-template/` (xlsx + CSVs)                           |
@@ -321,33 +321,31 @@ docs/sheet-template/    Starting Google Sheet (.xlsx + one CSV per tab)
 scripts/                Seed generator, image upload, Sheet sync, create-owner, netlify.toml writer
 netlify/functions/      Scheduled Sheet import
 e2e/                    Playwright tests
-src/app/[locale]/       Customer pages (one URL per language)
-src/app/admin/          Kitchen board, menu, settings, reports, staff (+ server actions in _actions/)
-src/app/api/            Orders, order status, cron, payment webhooks
-src/components/         UI components
-src/lib/domain/         Pure business logic + tests: money, pricing, hours, zones, phone
-src/lib/orders/         Order validation, pricing on the server, WhatsApp/Telegram text
-src/lib/sheet/          Google Sheet parsing and import
-src/lib/payments/       Payment gateway interface (none active yet)
-src/lib/print/          Bill / KOT data and printed text (en/ka/ru); pages in src/app/admin/print/
-src/proxy.ts            Language routing + admin session check (Next.js 16 "proxy", formerly middleware)
+src/app/                Routes: customer pages per language, admin panel, API (VIEW entry points)
+src/views/              Screens and UI pieces (VIEW)
+src/controllers/        Login checks, input validation, server actions, API handlers (CONTROLLER)
+src/model-helpers/      Business rules: order workflow, pricing, Sheet import, reports (MODEL HELPER)
+src/models/             Every database query, and the connections (MODEL)
+src/shared/             Pure tools used by all layers: money, hours, phone, cart, schemas
+src/config/             Environment settings and languages
+src/proxy.ts            Runs before each request; hands it to controllers/proxy.ts
 ```
 
 **Design notes**
 
 - **Money** is always integer tetri (1 GEL = 100 tetri). Only `parseGel` and `formatGel` convert.
-- **Time** is always Asia/Tbilisi, whatever timezone the server or visitor is in (`src/lib/domain/hours.ts`).
+- **Time** is always Asia/Tbilisi, whatever timezone the server or visitor is in (`src/shared/domain/hours.ts`).
 - **Prices are never trusted from the browser.** `create_order` re-prices everything from the database, inside one transaction.
 - **Customers can't read orders.** The tracking page uses `get_public_order`, which returns no phone or address. Status changes are broadcast on a per-order realtime channel.
 - **next-intl plugin:** `next.config.ts` sets the `next-intl/config` alias directly instead of using the plugin. The plugin loads `@swc/core`, whose native module refuses to start on some Windows setups.
 
 ## Things to confirm before launch
 
-- **Business profile:** the restaurant's name, address, texts, order-number prefix and time zone are data, not code (`restaurant_settings`, edited in Admin → Settings → Business profile). The starting values come from `supabase/migrations/20260929000009_business_profile.sql`. A unit test (`src/lib/config.test.ts`) fails if the name, street or phone gets hardcoded in `src/` or `messages/` again.
+- **Business profile:** the restaurant's name, address, texts, order-number prefix and time zone are data, not code (`restaurant_settings`, edited in Admin → Settings → Business profile). The starting values come from `supabase/migrations/20260929000009_business_profile.sql`. A unit test (`src/shared/config.test.ts`) fails if the name, street or phone gets hardcoded in `src/` or `messages/` again.
 
 - **Map pin:** the restaurant location is taken from OpenStreetMap (41.641, 41.6151). Check it in Admin → Settings.
 - **Delivery zone:** the starting zone is "Batumi, 5 km radius". Adjust it in Admin → Settings → Delivery zones.
 - **Fees and minimums:** the delivery fee and minimum order are **0**. Set them in the Sheet (Settings tab) or in the admin panel.
 - **Translations:** the Georgian and Russian text needs a native speaker's review. The admin panel is English only.
-- **Legal pages:** privacy, terms and refunds are placeholders (`src/content/legal.ts`). Have them checked for Georgian law.
+- **Legal pages:** privacy, terms and refunds are placeholders (`src/views/content/legal.ts`). Have them checked for Georgian law.
 - **Spice level:** it is a per-dish option (Mild / Medium / Spicy, default Medium). Staff accounts can mark dishes sold out.

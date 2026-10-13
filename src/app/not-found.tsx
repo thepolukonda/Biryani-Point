@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import '@/app/globals.css';
 import { fontVariables } from '@/app/fonts';
-import { Roundel } from '@/components/brand/logo';
-import { getRestaurant } from '@/lib/data/restaurant';
+import { Roundel } from '@/views/brand/logo';
+import { loadRestaurant } from '@/controllers/site/shop';
 
 // 404 for paths outside the language routes (the proxy normally adds /en, /ka or /ru).
 export default async function RootNotFound() {
   // A 404 must still render when the database is down.
-  const monogram = await getRestaurant()
+  const monogram = await loadRestaurant()
     .then((r) => r.profile.monogram)
     .catch(() => null);
   return (

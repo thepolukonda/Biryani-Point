@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { CartPageView } from '@/components/cart/cart-page';
-import { getBrand } from '@/lib/data/restaurant';
-import type { Locale } from '@/lib/domain/i18n-text';
-import { pageMetadata } from '@/lib/seo/metadata';
+import { CartPageView } from '@/views/cart/cart-page';
+import { loadBrand } from '@/controllers/site/shop';
+import type { Locale } from '@/shared/domain/i18n-text';
+import { pageMetadata } from '@/shared/seo/metadata';
 
 export async function generateMetadata({ params }: PageProps<'/[locale]/cart'>): Promise<Metadata> {
   const { locale } = (await params) as { locale: Locale };
   const [t, brand] = await Promise.all([
     getTranslations({ locale, namespace: 'meta' }),
-    getBrand(locale),
+    loadBrand(locale),
   ]);
   return pageMetadata({
     locale,

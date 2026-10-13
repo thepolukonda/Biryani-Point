@@ -1,13 +1,13 @@
 import { getTranslations } from 'next-intl/server';
-import { Roundel } from '@/components/brand/logo';
-import { ButtonLink } from '@/components/ui/button';
-import { getRestaurant } from '@/lib/data/restaurant';
+import { Roundel } from '@/views/brand/logo';
+import { ButtonLink } from '@/views/ui/button';
+import { loadRestaurant } from '@/controllers/site/shop';
 
 export default async function NotFound() {
   // A 404 must still render when the database is down.
   const [t, monogram] = await Promise.all([
     getTranslations('errors'),
-    getRestaurant()
+    loadRestaurant()
       .then((r) => r.profile.monogram)
       .catch(() => null),
   ]);

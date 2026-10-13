@@ -1,21 +1,21 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Roundel } from '@/components/brand/logo';
-import { OrderPanel } from '@/components/cart/order-panel';
-import { DishPhoto } from '@/components/menu/dish-photo';
-import { MenuBrowser } from '@/components/menu/menu-browser';
-import { OrderAgain } from '@/components/menu/order-again';
-import { OpenStatus } from '@/components/restaurant/open-status';
-import { ButtonAnchor } from '@/components/ui/button';
-import { PhoneIcon, PinIcon, StarIcon, TruckIcon, WhatsAppIcon } from '@/components/ui/icons';
-import { getBrand, getMenu, getRestaurant } from '@/lib/data/restaurant';
-import { pickText, type Locale } from '@/lib/domain/i18n-text';
-import { formatGel } from '@/lib/domain/money';
-import { describeOpenState } from '@/lib/domain/open-label';
-import { siteUrl } from '@/lib/env';
-import { directionsUrl, whatsappUrl } from '@/lib/links';
-import { jsonLdString, restaurantJsonLd } from '@/lib/seo/json-ld';
-import { pageMetadata } from '@/lib/seo/metadata';
+import { Roundel } from '@/views/brand/logo';
+import { OrderPanel } from '@/views/cart/order-panel';
+import { DishPhoto } from '@/views/menu/dish-photo';
+import { MenuBrowser } from '@/views/menu/menu-browser';
+import { OrderAgain } from '@/views/menu/order-again';
+import { OpenStatus } from '@/views/restaurant/open-status';
+import { ButtonAnchor } from '@/views/ui/button';
+import { PhoneIcon, PinIcon, StarIcon, TruckIcon, WhatsAppIcon } from '@/views/ui/icons';
+import { loadBrand, loadMenu, loadRestaurant } from '@/controllers/site/shop';
+import { pickText, type Locale } from '@/shared/domain/i18n-text';
+import { formatGel } from '@/shared/domain/money';
+import { describeOpenState } from '@/shared/domain/open-label';
+import { siteUrl } from '@/config/env';
+import { directionsUrl, whatsappUrl } from '@/shared/links';
+import { jsonLdString, restaurantJsonLd } from '@/shared/seo/json-ld';
+import { pageMetadata } from '@/shared/seo/metadata';
 
 export const revalidate = 300;
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps<'/[locale]/menu'>):
   const { locale } = (await params) as { locale: Locale };
   const [t, brand] = await Promise.all([
     getTranslations({ locale, namespace: 'meta' }),
-    getBrand(locale),
+    loadBrand(locale),
   ]);
   return pageMetadata({
     locale,
@@ -38,10 +38,10 @@ export default async function MenuPage({ params }: PageProps<'/[locale]/menu'>) 
   const { locale } = (await params) as { locale: Locale };
   setRequestLocale(locale);
   const [menu, restaurant, t, brand] = await Promise.all([
-    getMenu(),
-    getRestaurant(),
+    loadMenu(),
+    loadRestaurant(),
     getTranslations({ locale }),
-    getBrand(locale),
+    loadBrand(locale),
   ]);
   const initialOpen = describeOpenState(new Date(), restaurant.schedule);
   const { freeDeliveryOverTetri, deliveryFeeTetri } = restaurant.fees;

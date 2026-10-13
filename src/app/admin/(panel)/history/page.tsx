@@ -1,19 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireStaff } from '@/lib/admin/auth';
-import {
-  ADMIN_ORDER_SELECT,
-  orderKindLabel,
-  statusLabel,
-  type AdminOrder,
-} from '@/lib/admin/orders';
-import { cn } from '@/lib/cn';
-import { pickText, type I18nText } from '@/lib/domain/i18n-text';
-import { formatAmount } from '@/lib/domain/money';
-import { getRestaurant } from '@/lib/data/restaurant';
-import { formatGeorgianPhone } from '@/lib/domain/phone';
-import { orderLabel } from '@/lib/orders/format';
-import { sessionClient } from '@/lib/supabase/session';
+import { historyPage } from '@/controllers/admin/pages';
+import { orderKindLabel, statusLabel } from '@/shared/admin/orders';
+import { cn } from '@/shared/cn';
+import { pickText, type I18nText } from '@/shared/domain/i18n-text';
+import { formatAmount } from '@/shared/domain/money';
+import { formatGeorgianPhone } from '@/shared/domain/phone';
+import { orderLabel } from '@/shared/orders/format';
 
 export const metadata: Metadata = { title: 'History' };
 export const dynamic = 'force-dynamic';
@@ -26,31 +19,7 @@ const when = (iso: string, timeZone: string) =>
   }).format(new Date(iso));
 
 export default async function HistoryPage({ searchParams }: PageProps<'/admin/history'>) {
-  const [, params, { profile, timezone }] = await Promise.all([
-    requireStaff(),
-    searchParams,
-    getRestaurant(),
-  ]);
-  const prefix = profile.orderPrefix;
-  // "BP-1042", "bp1042" or "1042" all find order 1042.
-  const numberPattern = new RegExp(`^(${prefix}-?)?(\\d+)$`, 'i');
-  const q = typeof params.q === 'string' ? params.q.trim().slice(0, 40) : '';
-  const db = await sessionClient();
-
-  let query = db
-    .from('orders')
-    .select(ADMIN_ORDER_SELECT)
-    .order('created_at', { ascending: false })
-    .limit(100);
-  if (q) {
-    const number = Number(numberPattern.exec(q)?.[2]);
-    const digits = q.replace(/\D/g, '');
-    if (Number.isInteger(number) && number > 0) query = query.eq('order_number', number);
-    else if (digits.length >= 6) query = query.like('customer_phone', `%${digits.slice(-9)}%`);
-    else query = query.ilike('customer_name', `%${q.replace(/[%_]/g, '')}%`);
-  }
-  const { data, error } = await query;
-  const orders = (data ?? []) as AdminOrder[];
+  const { q, orders, orderPrefix: prefix, timezone } = await historyPage((await searchParams).q);
 
   return (
     <div className="grid gap-4">
@@ -78,7 +47,6 @@ export default async function HistoryPage({ searchParams }: PageProps<'/admin/hi
           </Link>
         )}
       </form>
-      {error && <p className="bg-danger-soft text-danger rounded-lg p-4">{error.message}</p>}
       {orders.length === 0 ? (
         <p className="bg-surface text-muted rounded-xl p-8 text-center">No orders found.</p>
       ) : (

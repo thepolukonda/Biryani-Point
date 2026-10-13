@@ -1,15 +1,11 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { Bill, Kot } from '@/components/admin/print/tickets';
-import { PrintButton, PrintOnLoad } from '@/components/admin/print/print-on-load';
-import { requireStaff } from '@/lib/admin/auth';
-import { loadTicket, sampleTicket, type TicketKind } from '@/lib/print/ticket-data';
+import { Bill, Kot } from '@/views/admin/print/tickets';
+import { PrintButton, PrintOnLoad } from '@/views/admin/print/print-on-load';
+import { ticketPage } from '@/controllers/admin/pages';
 import '../../print.css';
 
 export const metadata: Metadata = { title: 'Print' };
 export const dynamic = 'force-dynamic';
-
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
  * /admin/print/<order id>/<kot|bill>?copy=1&print=1
@@ -25,20 +21,14 @@ export default async function PrintPage({
   params: Promise<{ orderId: string; kind: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  await requireStaff();
   const [{ orderId, kind }, query] = await Promise.all([params, searchParams]);
-  if (kind !== 'kot' && kind !== 'bill') notFound();
-  if (orderId !== 'sample' && !UUID.test(orderId)) notFound();
-
-  const ctx = orderId === 'sample' ? await sampleTicket() : await loadTicket(orderId);
-  if (!ctx) notFound();
+  const { ctx, kind: ticketKind } = await ticketPage(orderId, kind);
 
   const copyNo = Math.max(1, Math.min(99, Number(query.copy) || 1));
   // KOT round (dishes added to a table later print on their own ticket).
   const round = Number(query.round) || undefined;
   const autoPrint = query.print === '1';
   const embedded = query.embed === '1';
-  const ticketKind = kind as TicketKind;
   const copies = ticketKind === 'kot' ? ctx.print.kot_copies : ctx.print.bill_copies;
   const paper = `${ctx.print.paper_width_mm}mm`;
   const printedAt = new Date().toISOString();

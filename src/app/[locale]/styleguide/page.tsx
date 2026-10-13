@@ -2,15 +2,15 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Logo, Roundel } from '@/components/brand/logo';
-import { SpiceMeter, VegMark } from '@/components/menu/dietary';
-import { Price } from '@/components/menu/price';
-import { OpenStatus } from '@/components/restaurant/open-status';
-import { Button } from '@/components/ui/button';
-import { Field, Input, Textarea } from '@/components/ui/field';
-import { getRestaurant } from '@/lib/data/restaurant';
-import type { Schedule } from '@/lib/domain/hours';
-import { logoBrand } from '@/lib/domain/restaurant';
+import { Logo, Roundel } from '@/views/brand/logo';
+import { SpiceMeter, VegMark } from '@/views/menu/dietary';
+import { Price } from '@/views/menu/price';
+import { OpenStatus } from '@/views/restaurant/open-status';
+import { Button } from '@/views/ui/button';
+import { Field, Input, Textarea } from '@/views/ui/field';
+import { loadRestaurant } from '@/controllers/site/shop';
+import type { Schedule } from '@/shared/domain/hours';
+import { logoBrand } from '@/shared/domain/restaurant';
 
 export const metadata: Metadata = {
   title: 'Design system',
@@ -47,7 +47,7 @@ export default async function Styleguide({ params }: PageProps<'/[locale]/styleg
   if (process.env.NODE_ENV === 'production') notFound();
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, restaurant] = await Promise.all([getTranslations(), getRestaurant()]);
+  const [t, restaurant] = await Promise.all([getTranslations(), loadRestaurant()]);
 
   return (
     <main className="mx-auto grid w-[min(1100px,100%-32px)] gap-12 py-10">

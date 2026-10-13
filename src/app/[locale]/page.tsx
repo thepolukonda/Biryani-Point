@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
-import { Hero } from '@/components/home/hero';
+import { Hero } from '@/views/home/hero';
 import {
   About,
   HowItWorks,
@@ -9,20 +9,20 @@ import {
   OwnerNote,
   Visit,
   WhatWeServe,
-} from '@/components/home/sections';
-import { SignatureDishes } from '@/components/home/signature-dishes';
-import { getBrand, getMenu, getRestaurant } from '@/lib/data/restaurant';
-import type { Locale } from '@/lib/domain/i18n-text';
-import { describeOpenState } from '@/lib/domain/open-label';
-import { siteUrl } from '@/lib/env';
-import { jsonLdString, restaurantJsonLd } from '@/lib/seo/json-ld';
-import { pageMetadata } from '@/lib/seo/metadata';
+} from '@/views/home/sections';
+import { SignatureDishes } from '@/views/home/signature-dishes';
+import { loadBrand, loadMenu, loadRestaurant } from '@/controllers/site/shop';
+import type { Locale } from '@/shared/domain/i18n-text';
+import { describeOpenState } from '@/shared/domain/open-label';
+import { siteUrl } from '@/config/env';
+import { jsonLdString, restaurantJsonLd } from '@/shared/seo/json-ld';
+import { pageMetadata } from '@/shared/seo/metadata';
 
 export const revalidate = 300;
 
 export async function generateMetadata({ params }: PageProps<'/[locale]'>): Promise<Metadata> {
   const { locale } = (await params) as { locale: Locale };
-  const brand = await getBrand(locale);
+  const brand = await loadBrand(locale);
   return pageMetadata({
     locale,
     path: '/',
@@ -36,9 +36,9 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
   const { locale } = (await params) as { locale: Locale };
   setRequestLocale(locale);
   const [menu, restaurant, brand] = await Promise.all([
-    getMenu(),
-    getRestaurant(),
-    getBrand(locale),
+    loadMenu(),
+    loadRestaurant(),
+    loadBrand(locale),
   ]);
 
   const signature = restaurant.signatureItemSlugs

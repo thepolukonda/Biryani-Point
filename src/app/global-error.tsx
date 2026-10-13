@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { reportError } from '@/lib/monitoring';
+import { reportError } from '@/shared/monitoring';
 
 // Last-resort page if a root layout itself fails. Plain styles: global CSS is not loaded here.
 // No restaurant name or phone: they come from the database, which may be what failed.
