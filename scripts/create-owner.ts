@@ -7,7 +7,7 @@
  */
 import { randomBytes } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../src/lib/supabase/database.types';
+import type { Database } from '../src/models/db/database.types';
 
 try {
   process.loadEnvFile?.('.env.local');

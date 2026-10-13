@@ -1,51 +1,25 @@
 import type { Metadata } from 'next';
-import { BillDetailsForm } from '@/components/admin/settings/bill-details-form';
-import { BusinessProfileForm } from '@/components/admin/settings/business-profile-form';
-import { ClosuresEditor, HoursEditor } from '@/components/admin/settings/hours-forms';
+import { settingsPage } from '@/controllers/admin/pages';
+import { BillDetailsForm } from '@/views/admin/settings/bill-details-form';
+import { BusinessProfileForm } from '@/views/admin/settings/business-profile-form';
+import { ClosuresEditor, HoursEditor } from '@/views/admin/settings/hours-forms';
 import {
   FeesForm,
   KitchenForm,
   NotificationsCard,
   OrderingForm,
   PauseBanner,
-} from '@/components/admin/settings/ordering-forms';
-import { IntegrationsForm, RestaurantForm } from '@/components/admin/settings/restaurant-forms';
-import type { SettingsData } from '@/components/admin/settings/shared';
-import { ZonesEditor } from '@/components/admin/settings/zones-form';
-import { requireOwner } from '@/lib/admin/auth';
-import type { I18nText } from '@/lib/domain/i18n-text';
-import { notificationsConfigured } from '@/lib/notify';
-import { loadPrintSettings } from '@/lib/print/ticket-data';
-import { sessionClient } from '@/lib/supabase/session';
+} from '@/views/admin/settings/ordering-forms';
+import { IntegrationsForm, RestaurantForm } from '@/views/admin/settings/restaurant-forms';
+import type { SettingsData } from '@/views/admin/settings/shared';
+import { ZonesEditor } from '@/views/admin/settings/zones-form';
 
 export const metadata: Metadata = { title: 'Settings' };
 export const dynamic = 'force-dynamic';
 
 export default async function SettingsPage() {
-  await requireOwner();
-  const db = await sessionClient();
-  const [settings, integrations, hours, closures, zones, dishes, print] = await Promise.all([
-    db.from('restaurant_settings').select('*').eq('id', 1).single(),
-    db.from('integration_settings').select('*').eq('id', 1).single(),
-    db.from('opening_hours').select('*').order('weekday').order('opens_at'),
-    db.from('closures').select('*').order('starts_on'),
-    db.from('delivery_zones').select('*').order('sort_order'),
-    db.from('menu_items').select('slug, name').eq('is_visible', true).order('sort_order'),
-    loadPrintSettings(),
-  ]);
-  if (!settings.data || !integrations.data) {
-    return <p className="bg-danger-soft text-danger rounded-lg p-4">Could not load settings.</p>;
-  }
-
-  const data: SettingsData = {
-    settings: settings.data,
-    integrations: integrations.data,
-    hours: hours.data ?? [],
-    closures: closures.data ?? [],
-    zones: zones.data ?? [],
-    dishes: (dishes.data ?? []).map((d) => ({ slug: d.slug, name: d.name as I18nText })),
-    notifications: notificationsConfigured(),
-  };
+  const { print, ...rest } = await settingsPage();
+  const data: SettingsData = rest;
   const pausedBySheet =
     data.settings.menu_source === 'sheet' &&
     data.settings.sheet_managed_fields.includes('orders_paused');

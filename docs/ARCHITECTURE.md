@@ -58,21 +58,37 @@ BP/
 └── OWNER_GUIDE.md       How to use the admin panel
 ```
 
-## 3. Inside `src/`
+## 3. Inside `src/`: the MVC layers
 
-`src/` is split into three layers. Each layer only uses the ones below it:
+The code follows **View → Controller → Model Helper → Model**. Each layer calls only the one below it. `npm run lint` enforces this, and it fails when a file imports from the wrong layer. Type-only imports (`import type`) are allowed anywhere.
 
 ```
- src/app/          Pages and API routes          ← "what is at which address"
-     │ uses
- src/components/   Pieces of screens (UI)        ← "what it looks like"
-     │ uses
- src/lib/          Logic and data access          ← "how it works"
+ src/app/  +  src/views/     VIEW          what is at which address, and what it looks like
+        │ calls
+ src/controllers/            CONTROLLER    checks who is signed in and what was sent; turns
+        │ calls                            results into messages, HTTP replies, page data
+ src/model-helpers/          MODEL HELPER  the business rules: pricing, order workflow,
+        │ calls                            Sheet import, reports, tickets
+ src/models/                 MODEL         the only code that talks to the database
+        │
+ Supabase (Postgres, Auth, Storage, Realtime)
+
+ src/shared/   small pure tools every layer may use (money, hours, phone, cart, schemas)
+ src/config/   settings (environment variables) and the language set-up
 ```
 
-### 3.1 `src/app/`: pages and routes
+An example, **Accept an order**:
 
-In Next.js, **the folder path is the web address**. A `page.tsx` inside a folder is the page at that address. `layout.tsx` wraps all pages below it, and `route.ts` is an API endpoint.
+| Layer        | File                                  | What it does                                                           |
+| ------------ | ------------------------------------- | ---------------------------------------------------------------------- |
+| View         | `views/admin/order-card.tsx`          | The **Accept** button calls `updateOrderStatus(...)`                   |
+| Controller   | `controllers/admin/orders.actions.ts` | `requireStaff()`, validates the input, turns `not_paid` into a message |
+| Model Helper | `model-helpers/orders/kitchen.ts`     | `changeStatus()`: works out the ready time, decides what to change     |
+| Model        | `models/orders.ts`                    | `findState()`, `update()`: the actual queries                          |
+
+### 3.1 View: `src/app/` (routing) and `src/views/` (screens)
+
+In Next.js, **the folder path under `src/app/` is the web address**, so this folder can't be renamed. Each `page.tsx` is kept short: it asks a controller for its data, then renders views. Each `route.ts` (API endpoint) is one line that hands the request to a controller.
 
 ```
 src/app/
@@ -80,147 +96,151 @@ src/app/
 ├── icon.tsx, apple-icon.tsx, manifest.ts Browser icons and "add to home screen"
 ├── robots.ts, sitemap.ts                 For search engines
 ├── not-found.tsx, global-error.tsx       Fallback 404 and crash pages
-│
 ├── [locale]/                  CUSTOMER SITE. [locale] = en | ka | ru
-│   ├── layout.tsx             Header, footer, cart; loads menu + restaurant data
-│   ├── page.tsx               Home page                      /en
-│   ├── menu/page.tsx          Menu                           /en/menu
-│   ├── cart/page.tsx          Cart                           /en/cart
-│   ├── checkout/page.tsx      Checkout                       /en/checkout
-│   ├── order/[publicId]/      Order tracking                 /en/order/abc123
+│   ├── layout.tsx, page.tsx   Header/footer/cart; home page        /en
+│   ├── menu/ cart/ checkout/  Menu, cart, checkout                  /en/menu …
+│   ├── order/[publicId]/      Order tracking                        /en/order/abc123
 │   ├── privacy/ terms/ refunds/   Legal pages
 │   ├── opengraph-image.tsx    Picture shown when a link is shared
 │   ├── styleguide/            Design reference (development only)
 │   └── [...rest]/             Any unknown address → translated 404
-│
 ├── admin/                     ADMIN PANEL (English only, staff login required)
-│   ├── login/                 Sign-in page                   /admin/login
-│   ├── (panel)/               Everything behind the login (the "(panel)" folder
-│   │   │                      name doesn't appear in the address)
+│   ├── login/                 Sign-in page                          /admin/login
+│   ├── (panel)/               Everything behind the login ("(panel)" isn't in the address)
 │   │   ├── layout.tsx         Checks login, shows the ☰ menu bar
-│   │   ├── page.tsx           Orders board                   /admin
-│   │   ├── tables/            Tables (owner)                 /admin/tables
-│   │   ├── history/           Past orders                    /admin/history
-│   │   ├── menu/              Edit dishes, photos, sold-out  /admin/menu
-│   │   ├── printers/          Printer setup                  /admin/printers
-│   │   ├── reports/           Sales reports + CSV export     /admin/reports
-│   │   ├── settings/          Business profile, hours, fees  /admin/settings
-│   │   └── staff/             Staff accounts (owner)         /admin/staff
-│   ├── print/[orderId]/[kind] Printable KOT / bill ticket
-│   └── _actions/              SERVER ACTIONS: the functions the admin buttons call
-│       ├── auth.ts            Sign in / out, change password (with lockout)
-│       ├── orders.ts          Accept, reject, change status, mark paid
-│       ├── counter.ts         Table & takeaway orders, add dishes, take payment, tables
-│       ├── menu.ts            Dishes, categories, photos, sold out
-│       ├── settings.ts        All settings forms
-│       ├── printing.ts        "Has this ticket been printed?" bookkeeping
-│       └── staff.ts           Add / remove staff, roles, passwords
-│
-└── api/                       API ROUTES (called by browsers or by schedulers)
-    ├── orders/route.ts        POST: create an order from the checkout (the only way)
-    ├── orders/[publicId]/     GET: the tracking page's latest order status
-    ├── cron/sheet-sync/       POST: every 5 min: import the Google Sheet, clean-up
+│   │   ├── page.tsx           Orders board                          /admin
+│   │   └── tables/ history/ menu/ printers/ reports/ settings/ staff/
+│   └── print/[orderId]/[kind] Printable KOT / bill ticket
+└── api/                       API ROUTES → controllers/api
+    ├── orders/                POST: create an order · GET [publicId]: tracking status
+    ├── cron/sheet-sync/       Every 5 min: Google Sheet import and clean-up
     └── payments/[provider]/   Webhook for online card payments (prepared, not used yet)
 ```
 
-`src/proxy.ts` runs before every request. It sends `/` to `/en` (or the visitor's language), and keeps the admin area out of search engines.
-
-### 3.2 `src/components/`: screen pieces
-
 ```
-src/components/
-├── ui/          Basic building blocks: Button, Field/Input, icons
-├── brand/       Logo and round monogram
-├── layout/      Site header, footer, language switcher
-├── home/        Home page sections (hero, signature dishes, about…)
-├── menu/        Menu browser, dish card, dish details sheet, veg/spice marks
-├── cart/        Cart drawer, cart lines, totals, cart page
-├── checkout/    Checkout form, time picker, location picker
-├── order/       Order tracking page
-├── restaurant/  "Open now / Closed" sign
-├── providers/   Things wrapped around the site: shop data + cart (shop-provider),
-│                analytics, service worker
-├── legal-page.tsx   Renders a legal page from src/content/legal.ts
-│
-└── admin/       Admin panel screens
-    ├── admin-nav.tsx      ☰ side menu
-    ├── orders-board.tsx   The Orders page: Dine in / Takeaway / Online tabs,
-    │                      live updates, sound alerts, auto-printing
-    ├── order-card.tsx     One order in full: dishes, status buttons, payment
-    ├── counter/           Tiles, table grid, "new order" dish picker, Tables page
-    ├── menu/  settings/  printers/  staff-manager.tsx   The other admin pages
-    ├── print/             Ticket layouts (KOT and bill) and auto-print helper
-    └── ui.tsx             Shared admin form pieces (Card, Labeled, Check…)
+src/views/
+├── ui/ brand/ layout/       Buttons, fields, icons; logo; header, footer, language switch
+├── home/ menu/ cart/        Home sections; menu browser and dish sheet; cart
+├── checkout/ order/         Checkout form, time and location pickers; order tracking
+├── restaurant/ providers/   "Open now" sign; shop data + cart, analytics, service worker
+├── content/legal.ts         Privacy, Terms and Refund texts in three languages
+├── legal-page.tsx           Renders a legal page
+└── admin/                   Admin screens: orders board, order card, counter (tables,
+                             dish picker), menu, settings, printers, staff, print tickets
 ```
 
 Files starting with `'use client'` run in the browser (anything with clicks, state or live updates). All others run only on the server.
 
-### 3.3 `src/lib/`: logic and data
+### 3.2 Controller: `src/controllers/`
 
 ```
-src/lib/
-├── domain/      PURE BUSINESS RULES (no database, fully unit-tested)
-│   ├── pricing.ts     Cart totals, delivery fee, minimum order, option prices
-│   ├── hours.ts       Opening hours, "open now?", time slots
-│   ├── menu.ts        Menu shape, what's orderable
-│   ├── money.ts       Money is whole tetri (1 GEL = 100 tetri); formatting
-│   ├── phone.ts       Georgian / international phone numbers
-│   ├── zones.ts       Delivery areas (distance from the restaurant)
-│   ├── restaurant.ts  Business profile (name, address, texts per language)
-│   └── i18n-text.ts   Texts stored in three languages {en, ka, ru}
-│
-├── data/        READING FROM THE DATABASE (cached)
-│   ├── restaurant.ts  getMenu(), getRestaurant(): used by almost every page
-│   └── public-order.ts  One order for the tracking page
-│
-├── orders/      CREATING ORDERS
-│   ├── schema.ts      What a checkout request must look like (Zod)
-│   ├── prepare.ts     Re-prices the order from the live menu, checks hours/zones
-│   ├── format.ts      Order numbers ("BP-1042"), Telegram/WhatsApp message text
-│   └── local.ts       What the customer's browser remembers about its orders
-│
-├── admin/       ADMIN HELPERS
-│   ├── auth.ts        requireStaff() / requireOwner(): the login check
-│   ├── orders.ts      Status names, which buttons an order shows next
-│   ├── printing.ts    Opening print tickets
-│   ├── reports.ts     Report maths (days, weeks, channels)
-│   └── alerts.ts      Sound / notification alerts
-│
-├── print/       Ticket contents and printed labels in three languages
-├── sheet/       Google Sheet import: download CSV → check rows → apply safely
-├── notify/      New-order alerts to Telegram and email
-├── payments/    Online payment plug-in point (not active)
-├── seo/         Page titles, share images, structured data for Google
+src/controllers/
+├── proxy.ts               Front controller for every page request (from src/proxy.ts):
+│                          language routing; for /admin, session refresh + login redirect
+├── site/shop.ts           What the customer pages read: restaurant, menu, tracked order
+├── api/
+│   ├── orders.ts          POST /api/orders (body size, validation, honeypot → HTTP reply)
+│   │                      and GET /api/orders/<id>
+│   ├── cron.ts            The scheduled job (checks CRON_SECRET)
+│   └── payments.ts        Card gateway webhook (checks the signature)
+├── admin/
+│   ├── guard.ts           requireStaff() / requireOwner(): every admin controller starts here
+│   ├── pages.ts           One function per admin page: checks the login, gathers its data
+│   ├── *.actions.ts       SERVER ACTIONS: what admin buttons and forms call
+│   │                      auth, orders, counter (tables, takeaway), menu, settings,
+│   │                      printing, staff
+│   ├── reports.ts         CSV download
+│   └── form-state.ts      The { ok, message, error } shape forms get back
+└── client/                Browser-side controllers: kitchen live updates, order
+                           tracking, dish photo upload, the auto-print device
+```
+
+Controllers never write SQL and never decide business rules. They check **who** and **what was sent**, call one Model Helper, and translate the result: a reason code like `table_busy` becomes "This table already has an open order".
+
+### 3.3 Model Helper: `src/model-helpers/`
+
+```
+src/model-helpers/
+├── orders/
+│   ├── online.ts        Placing a website order: rate limits, re-pricing, saving, alerts
+│   ├── prepare.ts       Re-prices from the live menu; checks hours, zone, minimum
+│   ├── kitchen.ts       Board, status changes, prep time, payment, history search
+│   ├── counter.ts       Table and takeaway orders, extra rounds, taking payment
+│   └── public-order.ts  The tracking page's view of an order
+├── restaurant.ts        getMenu() / getRestaurant(): database rows → menu and profile (cached)
+├── menu-admin.ts        Editing dishes, categories, options, photos, sold out
+├── settings.ts          Settings forms (skipping fields the Google Sheet controls)
+├── tables.ts            Dining tables and which are busy
+├── staff/               Sign-in with lockout, the signed-in user, staff accounts
+├── printing/            Ticket contents, printer settings, print log
+├── reports/             Report maths and the CSV file
+├── sheet/               Google Sheet import: download CSV → check rows → apply safely
+├── notify/              New-order alerts to Telegram and email
+├── payments/            Online payment plug-in point (not active) and webhook handling
+├── browser/             Browser-side: live board data, photo resizing
+└── outcome.ts           The { ok: false, reason } shape for expected failures
+```
+
+Helpers choose **whose permissions** a query runs with by picking the database connection (§5): the signed-in staff member (`staffDb`), or the server's secret key (`serviceDb`) after the controller has checked the login.
+
+### 3.4 Model: `src/models/`
+
+One file per group of tables. Each function is one query (or one database function call), takes the connection as its first argument, and throws a `DbError` when the database refuses.
+
+```
+src/models/
+├── db/            The connections (§5), shared types, DbError, generated table types
+├── orders.ts      orders, order_items; create_order / create_counter_order / add_order_round
+├── menu.ts        categories, dishes, option groups and options; Sheet snapshot; photos
+├── restaurant.ts  restaurant settings, opening hours, closures, delivery zones
+├── tables.ts      dining tables
+├── staff.ts       staff and their logins
+├── session.ts     the signed-in user's own session
+├── printing.ts    print settings, claim_print
+├── integrations.ts  Google Sheet links and import runs
+├── rate-limits.ts   rate limits and the clean-up function
+├── payments.ts      payments and webhook events
+└── live.ts          Realtime subscriptions in the browser (kitchen board, tracking)
+```
+
+### 3.5 `src/shared/` and `src/config/`
+
+```
+src/shared/
+├── domain/      PURE BUSINESS RULES (no database, fully unit-tested): pricing, hours,
+│                menu shape, money (whole tetri), phone, zones, profile, i18n texts
+├── orders/      Checkout request schema (browser and server), order number and
+│                message formats, what the browser remembers about its orders
+├── admin/       Order status names and next steps
+├── print/       Printed labels in three languages
 ├── cart/        The cart, stored in the customer's browser
-├── supabase/    Database connections (see §5) + generated table types
+├── seo/         Page titles, share images, structured data for Google
+└── request.ts, monitoring.ts, text.ts, links.ts …   Small tools
+
+src/config/
 ├── env.ts, env.server.ts   Reads and checks the settings (environment variables)
-├── request.ts   IP hashing, random ids
-└── monitoring.ts  Error reporting
+└── i18n/                   Languages: routing, language-aware links, translations loader
 ```
-
-Other folders in `src/`:
-
-- `src/i18n/`: language set-up. `routing.ts` lists the languages, and `navigation.ts` provides language-aware links.
-- `src/content/legal.ts`: the Privacy, Terms and Refund texts in three languages.
 
 ## 4. How things flow
 
 ### 4.1 A customer places an order
 
 ```
-Menu page ──add dishes──► Cart (saved in the browser: lib/cart/store.ts)
+Menu page ──add dishes──► Cart (saved in the browser: shared/cart/store.ts)
                              │
-Checkout form (components/checkout/checkout-form.tsx)
-   checks the form in the browser (lib/orders/schema.ts)
+Checkout form (views/checkout/checkout-form.tsx)
+   checks the form in the browser (shared/orders/schema.ts)
                              │  POST /api/orders
                              ▼
-app/api/orders/route.ts
-   1. validate again (never trust the browser)
-   2. rate limits: per device, per phone
-   3. prepareOrder(): re-price everything from the live menu, check opening
-      hours, delivery zone, minimum order, sold-out dishes (lib/orders/prepare.ts)
-   4. save order + dishes in one step: database function create_order
-   5. after replying: Telegram / email alert (lib/notify)
+controllers/api/orders.ts     validate again (never trust the browser), honeypot
+                             │
+model-helpers/orders/online.ts
+   1. rate limits: per device, per phone
+   2. prepareOrder(): re-price everything from the live menu, check opening
+      hours, delivery zone, minimum order, sold-out dishes (orders/prepare.ts)
+   3. save order + dishes in one step (models/orders.ts → create_order)
+   4. after replying: Telegram / email alert (model-helpers/notify)
                              │
                              ▼
 Customer is sent to /en/order/<publicId>: the tracking page, which updates live
@@ -229,9 +249,9 @@ Customer is sent to /en/order/<publicId>: the tracking page, which updates live
 ### 4.2 The kitchen handles it
 
 ```
-Database change ──Supabase Realtime──► Orders board (components/admin/orders-board.tsx)
+Database change ──Supabase Realtime──► Orders board (views/admin/orders-board.tsx)
                                            rings, shows a red "new" tile
-Staff tap Accept ──server action (app/admin/_actions/orders.ts)──► database
+Staff tap Accept ──controllers/admin/orders.actions.ts → model-helpers/orders/kitchen.ts → models/orders.ts
    └─ the database checks the move is allowed (e.g. can't "complete" an unpaid order)
 Auto-print device: opens /admin/print/<id>/kot and prints the kitchen ticket
 Customer's tracking page updates (Realtime broadcast)
@@ -239,11 +259,11 @@ Customer's tracking page updates (Realtime broadcast)
 
 ### 4.3 Table and takeaway orders (the till)
 
-The cashier taps a free table or **+ New takeaway**, picks dishes (`components/admin/counter/order-entry.tsx`), and `createCounterOrder` saves it and prints the KOT. **+ Add dishes** creates another round with its own ticket. **Bill & pay** prints the bill and records cash or card (`settleOrder`), which also frees the table.
+The cashier taps a free table or **+ New takeaway**, picks dishes (`views/admin/counter/order-entry.tsx`), and `createCounterOrder` (`model-helpers/orders/counter.ts`) saves it and prints the KOT. **+ Add dishes** creates another round with its own ticket. **Bill & pay** prints the bill and records cash or card (`settleOrder`), which also frees the table.
 
 ### 4.4 Menu from a Google Sheet (optional)
 
-Every 5 minutes, Netlify runs `netlify/functions/sheet-sync.mts`, which calls `POST /api/cron/sheet-sync`. That downloads the sheet's CSV tabs, checks every row (`lib/sheet/`), and applies only valid rows. It also clears old data and keeps the free database awake. Alternatively, the menu is edited directly in **Admin → Menu**.
+Every 5 minutes, Netlify runs `netlify/functions/sheet-sync.mts`, which calls `POST /api/cron/sheet-sync`. That downloads the sheet's CSV tabs, checks every row (`model-helpers/sheet/`), and applies only valid rows. It also clears old data and keeps the free database awake. Alternatively, the menu is edited directly in **Admin → Menu**.
 
 ## 5. The database (`supabase/`)
 
@@ -270,40 +290,44 @@ The database is built entirely by the numbered files in `supabase/migrations/`, 
 - **Staff** can read orders and change their status and payment.
 - **Owners** can also change the menu, settings, tables and staff.
 
-There are three kinds of database connection (`src/lib/supabase/`):
+There are four kinds of database connection (`src/models/db/`). Only the Model layer uses them; Model Helpers pick which one a query runs with:
 
-| Connection        | Where                                  | Rights                                              |
-| ----------------- | -------------------------------------- | --------------------------------------------------- |
-| `browserClient()` | In the browser                         | Only what the logged-in person may see (live board) |
-| `sessionClient()` | On the server, as the logged-in person | Same, used by admin actions                         |
-| `serviceClient()` | On the server only, secret key         | Everything; used only after checking the login      |
+| Connection    | Where                                  | Rights                                              |
+| ------------- | -------------------------------------- | --------------------------------------------------- |
+| `publicDb()`  | On the server, no login                | What any visitor may read (menu, hours)             |
+| `staffDb()`   | On the server, as the logged-in person | Only what that person may see and change            |
+| `serviceDb()` | On the server only, secret key         | Everything; used only after checking the login      |
+| `browserDb()` | In the browser (models/live.ts)        | Only what the logged-in person may see (live board) |
 
 `supabase/seed.sql` holds sample data and **local-only** test logins. It is never sent to the live database.
 
 ## 6. Where to change common things
 
-| I want to…                                            | Go to                                                                  |
-| ----------------------------------------------------- | ---------------------------------------------------------------------- |
-| Change name, address, phone, texts                    | Admin → Settings → Business profile (no code)                          |
-| Change dishes, prices, photos                         | Admin → Menu, or the Google Sheet                                      |
-| Change hours, fees, delivery zones                    | Admin → Settings                                                       |
-| Change a button label or message on the customer site | `messages/en.json`, `ka.json`, `ru.json` (same key in all three)       |
-| Change legal texts                                    | `src/content/legal.ts`                                                 |
-| Change colours, fonts                                 | `src/app/globals.css` (colour tokens), `src/app/fonts.ts`              |
-| Change how a page looks                               | the page in `src/app/…` → the components it uses in `src/components/…` |
-| Change price, fee or opening-hours rules              | `src/lib/domain/pricing.ts`, `hours.ts`                                |
-| Change what the kitchen ticket or bill shows          | `src/components/admin/print/tickets.tsx`, `src/lib/print/labels.ts`    |
-| Change order-status buttons                           | `src/lib/admin/orders.ts` (`nextSteps`)                                |
-| Add a database column or rule                         | a new file in `supabase/migrations/`, then `npm run db:types`          |
-| Change security headers                               | `security-headers.ts`, then `npm run netlify:toml`                     |
+| I want to…                                            | Go to                                                             |
+| ----------------------------------------------------- | ----------------------------------------------------------------- |
+| Change name, address, phone, texts                    | Admin → Settings → Business profile (no code)                     |
+| Change dishes, prices, photos                         | Admin → Menu, or the Google Sheet                                 |
+| Change hours, fees, delivery zones                    | Admin → Settings                                                  |
+| Change a button label or message on the customer site | `messages/en.json`, `ka.json`, `ru.json` (same key in all three)  |
+| Change legal texts                                    | `src/views/content/legal.ts`                                      |
+| Change colours, fonts                                 | `src/app/globals.css` (colour tokens), `src/app/fonts.ts`         |
+| Change how a page looks                               | the page in `src/app/…` → the views it uses in `src/views/…`      |
+| Change price, fee or opening-hours rules              | `src/shared/domain/pricing.ts`, `hours.ts`                        |
+| Change what the kitchen ticket or bill shows          | `src/views/admin/print/tickets.tsx`, `src/shared/print/labels.ts` |
+| Change order-status buttons                           | `src/shared/admin/orders.ts` (`nextSteps`)                        |
+| Add a database query                                  | a function in `src/models/…`, called from a Model Helper          |
+| Change a business rule (e.g. who may do what, when)   | the Model Helper in `src/model-helpers/…`                         |
+| Add a database column or rule                         | a new file in `supabase/migrations/`, then `npm run db:types`     |
+| Change security headers                               | `security-headers.ts`, then `npm run netlify:toml`                |
 
 ## 7. Conventions used everywhere
 
 - **Money** is always whole tetri (integers), never decimals: GEL 22.50 is stored as `2250`.
 - **Texts shown to customers** come from `messages/*.json` or are stored as `{en, ka, ru}` in the database. Never write customer text directly in code.
-- **Nothing about the business is written in code.** Name, address and phone come from the database. A test (`src/lib/config.test.ts`) fails if they are written in code.
+- **Nothing about the business is written in code.** Name, address and phone come from the database. A test (`src/shared/config.test.ts`) fails if they are written in code.
+- **Layers:** a page never queries the database, and a model never decides a rule. `npm run lint` fails when a file imports from the wrong layer.
 - **Check twice:** forms are checked in the browser for quick feedback, then again on the server, and the database has its own rules as a last line of defence.
-- **Tests:** logic in `src/lib/**/*.test.ts` (Vitest), and whole flows in `e2e/*.spec.ts` (Playwright: ordering, printing, tables, accessibility).
+- **Tests:** logic in `src/**/*.test.ts` (Vitest), and whole flows in `e2e/*.spec.ts` (Playwright: ordering, printing, tables, accessibility).
 
 ## 8. Commands
 

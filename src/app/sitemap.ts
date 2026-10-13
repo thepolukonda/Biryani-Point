@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { LOCALES } from '@/lib/domain/i18n-text';
-import { siteUrl } from '@/lib/env';
+import { LOCALES } from '@/shared/domain/i18n-text';
+import { siteUrl } from '@/config/env';
 
 const PAGES: { path: string; priority: number; changeFrequency: 'daily' | 'monthly' | 'yearly' }[] =
   [

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { reportError } from '@/lib/monitoring';
+import { reportError } from '@/shared/monitoring';
 
 // A page in the admin panel failed. The menu stays usable; staff can retry or move on.
 export default function AdminError({

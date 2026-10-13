@@ -16,7 +16,7 @@ const supabaseIsLocal = ['127.0.0.1', 'localhost'].includes(supabaseUrl.hostname
 // plugin only sets this alias for our setup, but it also eagerly loads @swc/core (for an
 // optional message-extraction feature we don't use), and that native module refuses to
 // start on some Windows profiles. Setting the alias directly avoids loading it at all.
-const I18N_REQUEST_CONFIG = './src/i18n/request.ts';
+const I18N_REQUEST_CONFIG = './src/config/i18n/request.ts';
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,

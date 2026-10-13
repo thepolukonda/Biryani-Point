@@ -15,7 +15,7 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
-    "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts && prettier --write --no-config --ignore-path= --parser typescript src/lib/supabase/database.types.ts",
+    "db:types": "supabase gen types typescript --local > src/models/db/database.types.ts && prettier --write --no-config --ignore-path= --parser typescript src/models/db/database.types.ts",
     "seed:generate": "tsx scripts/generate-seed.ts",
     "seed:images": "tsx scripts/upload-seed-images.ts",
     "sheet:template": "tsx scripts/generate-sheet-template.ts",

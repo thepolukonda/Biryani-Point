@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { fontVariables } from '@/app/fonts';
-import { getRestaurant } from '@/lib/data/restaurant';
+import { loadRestaurant } from '@/controllers/site/shop';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { brandName } = (await getRestaurant()).profile;
+  const { brandName } = (await loadRestaurant()).profile;
   return {
     title: { default: `Kitchen · ${brandName}`, template: `%s · Kitchen · ${brandName}` },
     robots: { index: false, follow: false },

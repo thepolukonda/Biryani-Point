@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next';
-import { getRestaurant } from '@/lib/data/restaurant';
-import { profileText } from '@/lib/domain/restaurant';
+import { loadRestaurant } from '@/controllers/site/shop';
+import { profileText } from '@/shared/domain/restaurant';
 
 export const revalidate = 3600;
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  const { profile } = await getRestaurant();
+  const { profile } = await loadRestaurant();
   const en = profileText(profile, 'en');
   return {
     name: en.siteName,

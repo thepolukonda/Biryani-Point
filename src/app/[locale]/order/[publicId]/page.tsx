@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
-import { OrderTracker } from '@/components/order/order-tracker';
-import { ButtonAnchor, ButtonLink } from '@/components/ui/button';
-import { WhatsAppIcon } from '@/components/ui/icons';
-import { getPublicOrder } from '@/lib/data/public-order';
-import { getRestaurant } from '@/lib/data/restaurant';
-import type { Locale } from '@/lib/domain/i18n-text';
-import { whatsappUrl } from '@/lib/links';
-import { orderLabel } from '@/lib/orders/format';
+import { OrderTracker } from '@/views/order/order-tracker';
+import { ButtonAnchor, ButtonLink } from '@/views/ui/button';
+import { WhatsAppIcon } from '@/views/ui/icons';
+import { loadRestaurant, loadTrackedOrder } from '@/controllers/site/shop';
+import type { Locale } from '@/shared/domain/i18n-text';
+import { whatsappUrl } from '@/shared/links';
+import { orderLabel } from '@/shared/orders/format';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,8 +17,8 @@ export async function generateMetadata({
   const { locale, publicId } = (await params) as { locale: Locale; publicId: string };
   const [t, order, restaurant] = await Promise.all([
     getTranslations({ locale, namespace: 'meta' }),
-    getPublicOrder(publicId),
-    getRestaurant(),
+    loadTrackedOrder(publicId),
+    loadRestaurant(),
   ]);
   return {
     title: order
@@ -35,8 +34,8 @@ export default async function OrderPage({ params }: PageProps<'/[locale]/order/[
   const { locale, publicId } = (await params) as { locale: Locale; publicId: string };
   setRequestLocale(locale);
   const [order, restaurant, t] = await Promise.all([
-    getPublicOrder(publicId),
-    getRestaurant(),
+    loadTrackedOrder(publicId),
+    loadRestaurant(),
     getTranslations(),
   ]);
 

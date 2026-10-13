@@ -1,15 +1,13 @@
 import type { Metadata } from 'next';
-import { PrinterSettingsForm, ThisDeviceCard } from '@/components/admin/printers/printer-forms';
-import { Card } from '@/components/admin/ui';
-import { requireStaff } from '@/lib/admin/auth';
-import { loadPrintSettings } from '@/lib/print/ticket-data';
+import { PrinterSettingsForm, ThisDeviceCard } from '@/views/admin/printers/printer-forms';
+import { Card } from '@/views/admin/ui';
+import { printersPage } from '@/controllers/admin/pages';
 
 export const metadata: Metadata = { title: 'Printers' };
 export const dynamic = 'force-dynamic';
 
 export default async function PrintersPage() {
-  const user = await requireStaff();
-  const print = await loadPrintSettings();
+  const { print, isOwner } = await printersPage();
   const preview = (kind: 'kot' | 'bill') => (
     <iframe
       // Reloads after saving, so the preview always matches the settings.
@@ -26,7 +24,7 @@ export default async function PrintersPage() {
       <div className="grid gap-5 xl:grid-cols-2">
         <div className="grid content-start gap-5">
           <ThisDeviceCard />
-          <PrinterSettingsForm print={print} canEdit={user.role === 'owner'} />
+          <PrinterSettingsForm print={print} canEdit={isOwner} />
         </div>
         <Card
           title="Preview"

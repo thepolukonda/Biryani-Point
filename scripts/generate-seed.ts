@@ -8,7 +8,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import ExcelJS from 'exceljs';
-import { buildSnapshot } from '../src/lib/sheet/build';
+import { buildSnapshot } from '../src/model-helpers/sheet/build';
 import { templateTabs, toCsv } from './sheet-template-data';
 
 const root = path.join(__dirname, '..');

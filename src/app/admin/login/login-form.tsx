@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { signIn, type SignInState } from '../_actions/auth';
+import { signIn, type SignInState } from '@/controllers/admin/auth.actions';
 
 const input =
   'w-full rounded-md border-[1.5px] border-transparent bg-soft px-3.5 py-3 text-base focus:border-gold-text focus:bg-surface focus:outline-none';

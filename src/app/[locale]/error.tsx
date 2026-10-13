@@ -2,11 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { Roundel } from '@/components/brand/logo';
-import { useShop } from '@/components/providers/shop-provider';
-import { Button, ButtonAnchor } from '@/components/ui/button';
-import { PhoneIcon } from '@/components/ui/icons';
-import { reportError } from '@/lib/monitoring';
+import { Roundel } from '@/views/brand/logo';
+import { useShop } from '@/views/providers/shop-provider';
+import { Button, ButtonAnchor } from '@/views/ui/button';
+import { PhoneIcon } from '@/views/ui/icons';
+import { reportError } from '@/shared/monitoring';
 
 export default function ErrorPage({
   error,

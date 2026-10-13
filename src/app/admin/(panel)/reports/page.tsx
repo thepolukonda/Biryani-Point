@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { requireOwner } from '@/lib/admin/auth';
-import { loadReport, rangeFrom, RANGES } from '@/lib/admin/report-data';
-import { bucketOrders, topItems, totals } from '@/lib/admin/reports';
-import { cn } from '@/lib/cn';
-import { getRestaurant } from '@/lib/data/restaurant';
-import { formatAmount } from '@/lib/domain/money';
+import { REPORT_RANGES as RANGES, reportsPage } from '@/controllers/admin/pages';
+import { cn } from '@/shared/cn';
+import { formatAmount } from '@/shared/domain/money';
 
 export const metadata: Metadata = { title: 'Reports' };
 export const dynamic = 'force-dynamic';
@@ -20,18 +17,15 @@ const dayLabel = (key: string) =>
   }).format(new Date(`${key}T00:00:00Z`));
 
 export default async function ReportsPage({ searchParams }: PageProps<'/admin/reports'>) {
-  await requireOwner();
   const params = await searchParams;
-  const range = rangeFrom(typeof params.range === 'string' ? params.range : undefined);
-  const by = params.by === 'week' ? 'week' : 'day';
-  const [{ orders, items }, { timezone }] = await Promise.all([
-    loadReport(range.from, range.to),
-    getRestaurant(),
-  ]);
-  const sum = totals(orders);
-  const buckets = bucketOrders(orders, by, timezone);
-  const top = topItems(items);
-  const max = Math.max(1, ...buckets.map((b) => b.revenueTetri));
+  const {
+    range,
+    by,
+    totals: sum,
+    buckets,
+    top,
+    maxRevenueTetri: max,
+  } = await reportsPage(params.range, params.by);
 
   return (
     <div className="grid gap-5">

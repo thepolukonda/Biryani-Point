@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { Logo } from '@/components/brand/logo';
-import { currentStaff } from '@/lib/admin/auth';
-import { getRestaurant } from '@/lib/data/restaurant';
-import { logoBrand } from '@/lib/domain/restaurant';
+import { Logo } from '@/views/brand/logo';
+import { currentStaff } from '@/controllers/admin/guard';
+import { loadRestaurant } from '@/controllers/site/shop';
+import { logoBrand } from '@/shared/domain/restaurant';
 import { LoginForm } from './login-form';
 
 export const metadata: Metadata = { title: 'Sign in' };
 
 export default async function LoginPage() {
-  const [staff, { profile }] = await Promise.all([currentStaff(), getRestaurant()]);
+  const [staff, { profile }] = await Promise.all([currentStaff(), loadRestaurant()]);
   if (staff) redirect('/admin');
   return (
     <main className="grid min-h-dvh place-items-center px-4">

@@ -4,8 +4,8 @@
  * links from Admin -> Settings, or the SHEET_*_CSV_URL variables.
  */
 import { createClient } from '@supabase/supabase-js';
-import type { Database } from '../src/lib/supabase/database.types';
-import { syncSheet, type SheetUrls } from '../src/lib/sheet/sync';
+import type { Database } from '../src/models/db/database.types';
+import { syncSheet, type SheetUrls } from '../src/model-helpers/sheet/sync';
 
 process.loadEnvFile?.('.env.local');
 

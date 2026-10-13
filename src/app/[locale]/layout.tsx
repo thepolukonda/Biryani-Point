@@ -3,18 +3,18 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { fontVariables } from '@/app/fonts';
-import { Announcer, BottomCartBar } from '@/components/layout/header-parts';
-import { SiteFooter } from '@/components/layout/site-footer';
-import { SiteHeader } from '@/components/layout/site-header';
-import { Analytics } from '@/components/providers/analytics';
-import { LazyOverlays } from '@/components/providers/lazy-overlays';
-import { ServiceWorker } from '@/components/providers/service-worker';
-import { ShopProvider } from '@/components/providers/shop-provider';
-import { routing } from '@/i18n/routing';
-import { getBrand, getMenu, getRestaurant } from '@/lib/data/restaurant';
-import { menuForLocale } from '@/lib/domain/client-menu';
-import type { Locale } from '@/lib/domain/i18n-text';
-import { siteUrl } from '@/lib/env';
+import { Announcer, BottomCartBar } from '@/views/layout/header-parts';
+import { SiteFooter } from '@/views/layout/site-footer';
+import { SiteHeader } from '@/views/layout/site-header';
+import { Analytics } from '@/views/providers/analytics';
+import { LazyOverlays } from '@/views/providers/lazy-overlays';
+import { ServiceWorker } from '@/views/providers/service-worker';
+import { ShopProvider } from '@/views/providers/shop-provider';
+import { routing } from '@/config/i18n/routing';
+import { loadBrand, loadMenu, loadRestaurant } from '@/controllers/site/shop';
+import { menuForLocale } from '@/shared/domain/client-menu';
+import type { Locale } from '@/shared/domain/i18n-text';
+import { siteUrl } from '@/config/env';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -22,7 +22,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: LayoutProps<'/[locale]'>): Promise<Metadata> {
   const { locale } = await params;
-  const brand = await getBrand(locale as Locale);
+  const brand = await loadBrand(locale as Locale);
   return {
     metadataBase: new URL(siteUrl),
     title: { default: brand.seoTitle, template: `%s | ${brand.siteName}` },
@@ -44,8 +44,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const [menu, restaurant, messages] = await Promise.all([
-    getMenu(),
-    getRestaurant(),
+    loadMenu(),
+    loadRestaurant(),
     getMessages(),
   ]);
 

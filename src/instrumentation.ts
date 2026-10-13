@@ -1,6 +1,6 @@
 /** Server-side error hook: every unhandled request error goes to reportError (and Sentry if configured). */
 import type { Instrumentation } from 'next';
-import { reportError } from '@/lib/monitoring';
+import { reportError } from '@/shared/monitoring';
 
 export function register() {
   // Nothing to set up: monitoring needs no SDK.
